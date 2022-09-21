@@ -29,3 +29,11 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Deploy on Netlify
+
+Check out  [https://nextjs-wagmi-tailwindcss.netlify.app/](https://nextjs-wagmi-tailwindcss.netlify.app/) for live.
+
+## Smart Contract [Rinkeby Testnet]
+
+Check out  [https://rinkeby.etherscan.io/address/0x606e797ae01b7f37fb7afde19696f23dc67209ef](https://rinkeby.etherscan.io/address/0x606e797ae01b7f37fb7afde19696f23dc67209ef) for live.

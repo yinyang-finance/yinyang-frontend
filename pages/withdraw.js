@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useContract, useSigner } from 'wagmi'
 import { utils } from 'ethers'
+import { toast } from 'react-toastify'
 
 import Layout from '../sections/Layout'
 import contractABI from '../data/contractABI.json'

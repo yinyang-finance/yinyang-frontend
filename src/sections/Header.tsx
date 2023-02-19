@@ -1,26 +1,30 @@
-import { useRouter } from 'next/router'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import Logo from '../components/common/Logo'
-import ConnectWallet from '../components/ConnectWallet'
 
 const links = [
   {
-    label: 'Deposit',
-    link: '/',
+    label: "Farms",
+    link: "/farms",
   },
   {
-    label: 'Withdraw',
-    link: '/withdraw',
+    label: "Vote",
+    link: "/vote",
   },
-]
+  {
+    label: "Temple",
+    link: "/temple",
+  },
+];
 
 const Header = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <header className="h-15 border-b border-gray-200">
-      <div className="container px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="flex">
           <Logo />
@@ -30,8 +34,8 @@ const Header = () => {
               <li
                 className={`mr-4 ${
                   router.route === item.link
-                    ? 'text-indigo-500 border-b border-indigo-500'
-                    : 'text-grey-500'
+                    ? "text-primary border-b border-info"
+                    : ""
                 }`}
                 key={index}
               >
@@ -44,10 +48,10 @@ const Header = () => {
         </div>
 
         {/* Connect Wallet */}
-        <ConnectWallet />
+        <ConnectButton />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

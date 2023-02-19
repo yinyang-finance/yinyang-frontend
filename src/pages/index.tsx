@@ -1,19 +1,16 @@
-import { useState } from 'react'
-import { useAccount, useContract, useSigner } from 'wagmi'
-import { utils } from 'ethers'
-import { toast } from 'react-toastify'
+import { ChangeEvent, ChangeEventHandler, useState } from 'react'
+import { useAccount, useSigner } from 'wagmi'
 
 import Layout from '../sections/Layout'
-import contractABI from '../data/contractABI.json'
 
 export default function Donate() {
   const { isConnected } = useAccount()
   const { data: signer } = useSigner()
-  const contract = useContract({
-    addressOrName: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    contractInterface: contractABI,
-    signerOrProvider: signer,
-  })
+  // const contract = useContract({
+  //   addressOrName: TEMPLE_ADDRESS,
+  //   contractInterface: contractABI,
+  //   signerOrProvider: signer,
+  // })
 
   const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
@@ -21,50 +18,48 @@ export default function Donate() {
   const [donating, setDonating] = useState(false)
 
   // handle recipient address change
-  const handleRecipientAddress = (e) => {
+  const handleRecipientAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setRecipient(e.target.value)
     setHasError(false)
   }
 
   // handle donation
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
+    // if (!utils.isAddress(recipient)) {
+    //   setHasError(true)
+    //   return
+    // }
 
-    if (!utils.isAddress(recipient)) {
-      setHasError(true)
-      return
-    }
-
-    setDonating(true)
-    try {
-      const result = await contract.donate(recipient, {
-        value: utils.parseEther(amount),
-      })
-      toast.success(
-        <>
-          <p className="text-md font-bold">Transaction Success!</p>
-          <p className="text-sm">
-            Click{' '}
-            <a
-              href={`https://rinkeby.etherscan.io/tx/${result.hash}`}
-              className="underline"
-            >
-              here
-            </a>{' '}
-            to check the transaction detail
-          </p>
-        </>,
-      )
-    } catch (error) {
-      console.log(error)
-      toast.error(
-        <>
-          <p className="text-md font-bold">Transaction Failed!</p>
-          <p className="text-sm">Please try again later!</p>
-        </>,
-      )
-    }
-    setDonating(false)
+    // setDonating(true)
+    // try {
+    //   const result = await contract.donate(recipient, {
+    //     value: utils.parseEther(amount),
+    //   })
+    //   toast.success(
+    //     <>
+    //       <p className="text-md font-bold">Transaction Success!</p>
+    //       <p className="text-sm">
+    //         Click{' '}
+    //         <a
+    //           href={`https://rinkeby.etherscan.io/tx/${result.hash}`}
+    //           className="underline"
+    //         >
+    //           here
+    //         </a>{' '}
+    //         to check the transaction detail
+    //       </p>
+    //     </>,
+    //   )
+    // } catch (error) {
+    //   console.log(error)
+    //   toast.error(
+    //     <>
+    //       <p className="text-md font-bold">Transaction Failed!</p>
+    //       <p className="text-sm">Please try again later!</p>
+    //     </>,
+    //   )
+    // }
+    // setDonating(false)
   }
 
   return (

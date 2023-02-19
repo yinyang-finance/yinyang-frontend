@@ -1,12 +1,18 @@
-import Header from './Header'
-import Footer from './Footer'
 import Head from 'next/head'
+import React from 'react'
 
-const Layout = ({ children }) => {
+import { APP_NAME } from '../data'
+import Footer from './Footer'
+import Header from './Header'
+
+interface Props {
+  children: React.ReactNode
+}
+const Layout = ({ children }: Props) => {
   return (
     <>
       <Head>
-        <title>NFTLaunchKit</title>
+        <title>{APP_NAME}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

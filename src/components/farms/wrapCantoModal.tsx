@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js'
 import { Interface } from 'ethers/lib/utils'
 import React from 'react'
+import { toast } from 'react-toastify'
 import { useAccount, useBalance, useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import IWCantoABI from '../../data/abis/IWCanto.json'
@@ -8,7 +9,7 @@ import { tokens } from '../../data/tokens'
 
 interface Props {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (mutated?: boolean) => void;
 }
 export default function WrappedCantoModal({ isOpen, onClose }: Props) {
   const { address } = useAccount();
@@ -18,6 +19,7 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
     : null;
   // const { balanceOf } = useTokenBalance(tokens.wcanto.address);
   const [amount, setAmount] = React.useState<number>(0);
+  const [loading, setLoading] = React.useState(false);
   const { config } = usePrepareContractWrite({
     addressOrName: tokens.wcanto.address,
     contractInterface: new Interface(IWCantoABI.abi),
@@ -29,23 +31,24 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
     status,
     isLoading,
     isSuccess,
-    write: deposit,
+    // write: deposit,
+    writeAsync: deposit,
   } = useContractWrite(config);
-  console.log(data, isLoading, isSuccess, balanceData);
-
-  React.useEffect(() => {
-    if (status === "success") {
-      refetch();
-    }
-  }, [refetch, status]);
 
   const handleDeposit = async () => {
     if (!deposit) return;
 
-    deposit();
+    setLoading(true);
+    try {
+      await deposit();
+      refetch();
+      onClose(true);
+    } catch (err) {
+      toast.error(String(err));
+    } finally {
+      setLoading(false);
+    }
   };
-
-  console.log(balanceData, formattedBalance?.toString());
 
   return (
     <div className={`modal ${isOpen ? "modal-open" : ""}`}>
@@ -77,11 +80,14 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
           </div>
         </div>
         <div className="btn-group flex">
-          <div className="btn btn-secondary w-3/6" onClick={onClose}>
+          <div
+            className="btn btn-secondary w-3/6"
+            onClick={() => onClose(false)}
+          >
             Cancel
           </div>
           <div
-            className="btn btn-primary w-3/6"
+            className={`btn btn-primary w-3/6 ${loading ? "loading" : ""}`}
             onClick={() => handleDeposit()}
           >
             Confirm

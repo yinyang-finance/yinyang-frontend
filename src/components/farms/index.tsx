@@ -1,30 +1,5 @@
-import { YANG_DISTRIBUTOR, YIN_DISTRIBUTOR } from '../../data'
-import { Token, tokens } from '../../data/tokens'
+import { yangFarms, yinFarms } from '../../data/farms'
 import FarmCard from './farmCard'
-
-export interface Farm {
-  poolId: number;
-  token: Token;
-  multiplier: number;
-  yin: boolean;
-  distributor: string;
-}
-const farms: Farm[] = [
-  {
-    poolId: 0,
-    token: tokens.wcanto,
-    multiplier: 1,
-    yin: false,
-    distributor: YANG_DISTRIBUTOR,
-  },
-  {
-    poolId: 1,
-    token: tokens.note,
-    multiplier: 1,
-    yin: true,
-    distributor: YIN_DISTRIBUTOR,
-  },
-];
 
 export default function FarmsContent() {
   return (
@@ -35,10 +10,21 @@ export default function FarmsContent() {
         Farm the initial supply of $YIN and $YANG by depositing tokens in our
         the farms below.
       </p>
-      <div className="flex flex-wrap gap-5">
-        {farms.map((farm) => (
-          <FarmCard key={farm.poolId} farm={farm} />
-        ))}
+      <div>
+        <div className="text-2xl font-bold">Yin farms</div>
+        <div className="flex flex-wrap gap-5">
+          {yinFarms.map((farm) => (
+            <FarmCard key={farm.poolId} farm={farm} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <div className="text-2xl font-bold">Yang farms</div>
+        <div className="flex flex-wrap gap-5">
+          {yangFarms.map((farm) => (
+            <FarmCard key={farm.poolId} farm={farm} />
+          ))}
+        </div>
       </div>
     </section>
   );

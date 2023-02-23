@@ -105,11 +105,11 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
         ) : null}
         {farm.lpTokens !== undefined ? (
           <a
-            href={`https://www.cantoswap.fi/#/add/v2/${farm.lpTokens[0]}/${farm.lpTokens[1]}`}
+            href={`https://www.cantoswap.fi/#/add/v2/${farm.lpTokens[0].address}/${farm.lpTokens[1].address}`}
             target="__blank"
             className="mx-auto"
           >
-            <div className="btn">
+            <div className="btn flex flex-row gap-2">
               <div className="my-auto">Add liquidity</div>
               <FaExternalLinkAlt className="h-4 w-4 my-auto" />
             </div>

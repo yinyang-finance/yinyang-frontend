@@ -43,30 +43,44 @@ export default function FarmCard({ farm }: Props) {
 
   return (
     <div className="bg-base-200 p-2 rounded-xl shadow-xl w-fit flex flex-col gap-3">
-      <DepositModal
-        farm={farmData}
-        isOpen={openDeposit}
-        onClose={(mutated) => {
-          setOpenDeposit(false);
+      {openDeposit ? (
+        <DepositModal
+          farm={farmData}
+          isOpen={openDeposit}
+          onClose={(mutated) => {
+            setOpenDeposit(false);
 
-          if (mutated && farmData.refetch) {
-            farmData.refetch();
-          }
-        }}
-      />
-      <WithdrawModal
-        farm={farmData}
-        deposited={farmData.userDeposit}
-        isOpen={openWithdraw}
-        onClose={(mutated) => {
-          setOpenWithdraw(false);
+            if (mutated && farmData.refetch) {
+              farmData.refetch();
+            }
+          }}
+        />
+      ) : null}
+      {openWithdraw ? (
+        <WithdrawModal
+          farm={farmData}
+          deposited={farmData.userDeposit}
+          isOpen={openWithdraw}
+          onClose={(mutated) => {
+            setOpenWithdraw(false);
 
-          if (mutated && farmData.refetch) {
-            farmData.refetch();
-          }
-        }}
-      />
+            if (mutated && farmData.refetch) {
+              farmData.refetch();
+            }
+          }}
+        />
+      ) : null}
       <div className="text-2xl font-bold text-center m-auto flex flex-col">
+        {farm.lpTokens ? (
+          <div className="flex flex-row gap-2 mx-auto p-2">
+            <img className="w-12" src={farm.lpTokens[0].logo.src}></img>
+            <img className="w-12" src={farm.lpTokens[1].logo.src}></img>
+          </div>
+        ) : (
+          <div className="flex flex-row mx-auto p-2">
+            <img className="w-12" src={farm.token.logo.src}></img>
+          </div>
+        )}
         <div className="my-auto">{farm.token.name}</div>
         <a
           className="mx-auto"

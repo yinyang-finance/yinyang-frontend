@@ -118,8 +118,6 @@ export function useFarm(farm: Farm) {
     const frequency = 5;
     const interval = setInterval(() => {
       if (farmData.poolInfo) {
-        // const base = parseFarmData();
-        // console.log("update rewards", base);
         setFarmData((base) => {
           const newData = { ...base };
           if (
@@ -129,14 +127,14 @@ export function useFarm(farm: Farm) {
             base.poolInfo !== undefined
           ) {
             const userOwnership = base.userDeposit / base.totalDeposited;
-            const rewardPerSecond = 10000 / 86400;
-            console.log(newData.userRewards, userOwnership);
+            const rewardPerSecond =
+              ((10000 / 86400) * farm.multiplier) / farm.totalAllocPoints;
 
             newData.userRewards =
               (newData?.userRewards || 0) +
               userOwnership * rewardPerSecond * frequency;
           }
-          return base;
+          return newData;
         });
       }
     }, frequency * 1000);

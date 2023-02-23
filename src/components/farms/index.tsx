@@ -1,15 +1,13 @@
-import { BiError } from 'react-icons/bi'
-
 import { yangFarms, yinFarms } from '../../data/farms'
 import FarmCard from './farmCard'
 
 export default function FarmsContent() {
   return (
     <section className="flex flex-col justify-center items-center space-y-10 mt-12 p-3">
-      <div className="alert alert-error shadow-lg">
+      {/* <div className="alert alert-error shadow-lg">
         <div>Pending rewards are bugged</div>
         <BiError className="w-8 h-8" />
-      </div>
+      </div> */}
       <p className="text-center font-semibold text-5xl">Farms</p>
       <p className="text-center">
         Farm the initial supply of $YIN and $YANG by depositing tokens in our

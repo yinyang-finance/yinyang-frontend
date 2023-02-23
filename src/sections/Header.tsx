@@ -10,8 +10,8 @@ const links = [
     link: "/farms",
   },
   {
-    label: "Vote",
-    link: "/vote",
+    label: "Garden",
+    link: "/garden",
   },
   {
     label: "Temple",

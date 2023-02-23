@@ -6,11 +6,11 @@ import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import { YANG_DISTRIBUTOR_ADDRESS } from '../../data'
 import distributorABI from '../../data/abis/distributor.json'
-import { Farm } from '../../data/farms'
+import { FarmData } from '../../hooks/useFarm'
 import useTokenBalance from '../../hooks/useTokenBalance'
 
 interface Props {
-  farm: Farm;
+  farm: FarmData;
   deposited?: number;
   isOpen: boolean;
   onClose: (mutated?: boolean) => void;

@@ -1,6 +1,6 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import { erc20ABI, useAccount, useContractReads } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import { erc20ABI, useAccount, useContractReads } from "wagmi";
 
 export default function useTokenBalance(
   addressOrName: string,
@@ -27,10 +27,10 @@ export default function useTokenBalance(
     contracts: [decimals, balanceOf],
   });
 
-  return data
+  return data && data.filter(Boolean).length === 2
     ? {
-        balanceOf: new Decimal(data[1].toString()).div(
-          10 ** Number(data[0].toString())
+        balanceOf: new Decimal(data[1]?.toString()).div(
+          10 ** Number(data[0]?.toString())
         ),
         decimals: new Decimal(data[0].toString()).toNumber(),
         status,

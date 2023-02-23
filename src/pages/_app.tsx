@@ -1,17 +1,24 @@
-import '../styles/globals.css'
-import '@rainbow-me/rainbowkit/styles.css'
-import 'react-toastify/dist/ReactToastify.css'
-import 'tailwindcss/tailwind.css'
+import "../styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import "tailwindcss/tailwind.css";
 
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { ThemeProvider } from 'next-themes'
-import { AppProps } from 'next/app'
-import { useEffect, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { ThemeProvider } from "next-themes";
+import { AppProps } from "next/app";
+import { useEffect, useState } from "react";
+import { FaYinYang } from "react-icons/fa";
+import { ToastContainer } from "react-toastify";
+import {
+  Chain,
+  chain,
+  configureChains,
+  createClient,
+  WagmiConfig,
+} from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
 
-const localChain = {
+const localChain: Chain = {
   /** ID in number form */
   id: 7700,
   /** Human-readable name */
@@ -20,26 +27,44 @@ const localChain = {
   network: "localhost",
   /** Collection of RPC endpoints */
   rpcUrls: {
-    "7700": "http://127.0.0.1:8545"
+    default: "http://127.0.0.1:8545",
+    "7700": "http://127.0.0.1:8545",
   },
   /** Flag for test networks */
-  testnet: true
+  testnet: true,
+  multicall: {
+    address: "0xcA11bde05977b3631167028862bE2a173976CA11",
+    blockCreated: 2905789,
+  },
 };
-
-chain.localhost.id = 7700
+const cantoTestnetChain: Chain = {
+  /** ID in number form */
+  id: 740,
+  /** Human-readable name */
+  name: "Testnet",
+  /** Internal network name */
+  network: "testnet",
+  /** Collection of RPC endpoints */
+  rpcUrls: {
+    default: "https://eth.plexnode.wtf",
+  },
+  /** Flag for test networks */
+  testnet: true,
+  multicall: {
+    address: "0xcA11bde05977b3631167028862bE2a173976CA11",
+    blockCreated: 2905789,
+  },
+};
 
 // Configure chains and providers
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.localhost],
-  [publicProvider()],
-)
-
-console.log(chain.localhost);
-
+  [chain.mainnet, localChain],
+  [publicProvider()]
+);
 
 const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
-  chains
+  appName: "yinyang.fi",
+  chains,
 });
 
 // Configure wagmi client
@@ -48,29 +73,33 @@ const client = createClient({
   connectors,
   provider,
   webSocketProvider,
-})
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [documentLoaded, setDocumentLoaded] = useState(false)
+  const [documentLoaded, setDocumentLoaded] = useState(false);
 
   useEffect(() => {
-    setDocumentLoaded(true)
-  }, [])
+    setDocumentLoaded(true);
+  }, []);
 
   return (
     <>
-      {documentLoaded && (
+      {documentLoaded ? (
         <ThemeProvider enableSystem={true} attribute="class">
           <WagmiConfig client={client}>
-          <RainbowKitProvider chains={chains}>
-            <Component {...pageProps} />
-            <ToastContainer position="bottom-right" autoClose={5000} />
+            <RainbowKitProvider chains={chains}>
+              <Component {...pageProps} />
+              <ToastContainer position="bottom-right" autoClose={5000} />
             </RainbowKitProvider>
           </WagmiConfig>
         </ThemeProvider>
+      ) : (
+        <div className="w-screen h-screen flex">
+          <FaYinYang className="w-48 h-48 animate-bounce m-auto" />
+        </div>
       )}
     </>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

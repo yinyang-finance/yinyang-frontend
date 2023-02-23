@@ -1,23 +1,22 @@
 import Decimal from 'decimal.js'
 import { Interface } from 'ethers/lib/utils'
 import React from 'react'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import distributorABI from '../../data/abis/distributor.json'
-import { Farm } from '../../data/farms'
 import { tokens } from '../../data/tokens'
+import { FarmData } from '../../hooks/useFarm'
 import useTokenApproval from '../../hooks/useTokenApproval'
-import useTokenBalance from '../../hooks/useTokenBalance'
 import WrappedCantoModal from './wrapCantoModal'
 
 interface Props {
-  farm: Farm;
+  farm: FarmData;
   isOpen: boolean;
   onClose: (mutated?: boolean) => void;
 }
 export default function DepositModal({ farm, isOpen, onClose }: Props) {
-  const { decimals, balanceOf, refetch } = useTokenBalance(farm.token.address);
   const { allowance, approve, isApproving } = useTokenApproval(
     farm.token.address,
     farm.distributor
@@ -31,10 +30,10 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
     functionName: "deposit",
     args: [
       farm.poolId,
-      new Decimal(amount || 0).mul(10 ** (decimals || 0)).toHex(),
+      new Decimal(amount || 0).mul(10 ** (farm.token.decimals || 0)).toHex(),
     ],
   });
-  const { data, error, status, writeAsync: deposit } = useContractWrite(config);
+  const { writeAsync: deposit } = useContractWrite(config);
 
   const handleDeposit = async () => {
     if (!deposit) return;
@@ -42,12 +41,22 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
     setLoading(true);
     try {
       await deposit();
-      refetch();
       onClose(true);
     } catch (err) {
       toast.error(String(err));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleApprove = async () => {
+    if (!approve) return;
+
+    try {
+      await approve();
+      farm.refetch && farm.refetch();
+    } catch (err) {
+      toast.error(String(err));
     }
   };
 
@@ -65,18 +74,19 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
               onChange={(e) => setAmount(Number(e.target.value))}
               value={amount}
               className="p-2 rounded w-full"
+              disabled={!allowance || allowance.eq(0)}
             />
-            <span
-              className="btn"
-              onClick={() => setAmount(balanceOf?.toNumber())}
-            >
+            <span className="btn" onClick={() => setAmount(farm.userBalance)}>
               MAX
             </span>
           </div>
           <div className="text-right">
             Your balance:{" "}
             <span className="font-bold">
-              {balanceOf ? balanceOf.toString() : "??"} {farm.token.symbol}
+              {farm.userBalance !== undefined
+                ? farm.userBalance.toFixed(2)
+                : "??"}{" "}
+              {farm.token.symbol}
             </span>
           </div>
         </div>
@@ -89,12 +99,21 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
               isOpen={openWrap}
               onClose={(mutated) => {
                 setOpenWrap(false);
-                if (mutated) {
-                  refetch();
-                }
               }}
             />
           </>
+        ) : null}
+        {farm.lpTokens !== undefined ? (
+          <a
+            href={`https://www.cantoswap.fi/#/add/v2/${farm.lpTokens[0]}/${farm.lpTokens[1]}`}
+            target="__blank"
+            className="mx-auto"
+          >
+            <div className="btn">
+              <div className="my-auto">Add liquidity</div>
+              <FaExternalLinkAlt className="h-4 w-4 my-auto" />
+            </div>
+          </a>
         ) : null}
         <div className="btn-group flex">
           <div className="btn btn-secondary w-3/6" onClick={() => onClose()}>
@@ -112,7 +131,7 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
               className={`btn btn-accent w-3/6 ${
                 isApproving ? "btn-loading" : ""
               }`}
-              onClick={() => approve && approve()}
+              onClick={handleApprove}
             >
               Approve
             </div>

@@ -1,10 +1,10 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { AiOutlineMenu } from 'react-icons/ai'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import { AiOutlineMenu } from "react-icons/ai";
 
-import Logo from '../components/common/Logo'
+import Logo from "../components/common/Logo";
 
 const links = [
   {
@@ -27,13 +27,13 @@ const Header = () => {
   console.log(open);
 
   return (
-    <header className="h-15 border-b border-gray-200">
-      <div className="hidden mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-        <div className="flex">
+    <header className="h-15 border-b border-gray-200 relative">
+      <div className="absolute container sm:visible invisible mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+        <div className="flex flex-row justify-between w-5/6 mx-auto">
           <Logo />
           {/* Desktop */}
-          <div>
-            <ul className="ml-16 flex items-center">
+          <div className="flex">
+            <ul className="ml-16 flex items-center my-auto">
               {links.map((item, index) => (
                 <li
                   className={`mr-4 ${
@@ -53,7 +53,7 @@ const Header = () => {
           <ConnectButton />
         </div>
       </div>
-      <div className="container sm:hidden mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="relative container visible sm:invisible mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         {/* Mobile*/}
         <div className="flex flex-row justify-between w-full">
           <Logo className="mx-auto" />
@@ -63,7 +63,6 @@ const Header = () => {
         </div>
         {open ? (
           <div
-            // className={`fixed top-0 left-0 z-40 w-screen h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-base-100`}
             className={`fixed top-0 left-0 z-40 h-screen w-screen bg-base-100 transition-transform flex flex-col gap-5`}
           >
             <div className="flex flex-row justify-between p-4">
@@ -86,12 +85,12 @@ const Header = () => {
               </div>
             </div>
             <div className="p-2">
-              <ul className="flex items-center flex flex-col gap-2">
+              <ul className="text-xl flex items-center flex flex-col gap-2">
                 {links.map((item, index) => (
                   <li
                     className={`${
                       router.route === item.link
-                        ? "text-xl text-primary border-b border-info"
+                        ? "text-2xl font-bold text-primary border-b border-accent"
                         : ""
                     }`}
                     key={index}

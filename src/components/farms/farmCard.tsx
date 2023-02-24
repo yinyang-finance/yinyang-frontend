@@ -1,15 +1,15 @@
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { toast } from 'react-toastify'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
-import { EXPLORER_URL } from '../../data'
-import distributorABI from '../../data/abis/distributor.json'
-import { Farm } from '../../data/farms'
-import { useFarm } from '../../hooks/useFarm'
-import DepositModal from './depositModal'
-import WithdrawModal from './withdrawModal'
+import { EXPLORER_URL } from "../../data";
+import distributorABI from "../../data/abis/distributor.json";
+import { Farm } from "../../data/farms";
+import { useFarm } from "../../hooks/useFarm";
+import DepositModal from "./depositModal";
+import WithdrawModal from "./withdrawModal";
 
 interface Props {
   farm: Farm;
@@ -100,14 +100,29 @@ export default function FarmCard({ farm }: Props) {
         </div>
         <div className="flex flex-row justify-between">
           <div className="">Deposited</div>
-          <div className="font-bold">
+          <div className="font-bold flex flex-row gap-1">
             {farmData.userDeposit?.toString() || "???"}
+            {farm.lpTokens ? (
+              <>
+                <img
+                  className="w-4 h-4 my-auto"
+                  src={farm.lpTokens[0].logo.src}
+                />
+                <img
+                  className="w-4 h-4 my-auto"
+                  src={farm.lpTokens[1].logo.src}
+                />
+              </>
+            ) : (
+              <img className="w-4 h-4 my-auto" src={farm.token.logo.src} />
+            )}
           </div>
         </div>
         <div className="flex flex-row justify-between">
           <div className="">Pending</div>
-          <div className="font-bold">
-            {farmData.userRewards?.toFixed(2) || "??"}
+          <div className="font-bold flex flex-row gap-1">
+            <div>{farmData.userRewards?.toFixed(2) || "??"}</div>
+            <img className="w-4 h-4 my-auto" src={farm.reward.logo.src} />
           </div>
         </div>
       </div>

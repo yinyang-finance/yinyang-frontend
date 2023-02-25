@@ -1,22 +1,16 @@
-import "../styles/globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import "react-toastify/dist/ReactToastify.css";
-import "tailwindcss/tailwind.css";
+import '../styles/globals.css'
+import '@rainbow-me/rainbowkit/styles.css'
+import 'react-toastify/dist/ReactToastify.css'
+import 'tailwindcss/tailwind.css'
 
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { ThemeProvider } from "next-themes";
-import { AppProps } from "next/app";
-import { useEffect, useState } from "react";
-import { FaYinYang } from "react-icons/fa";
-import { ToastContainer } from "react-toastify";
-import {
-  Chain,
-  chain,
-  configureChains,
-  createClient,
-  WagmiConfig,
-} from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { ThemeProvider } from 'next-themes'
+import { AppProps } from 'next/app'
+import { useEffect, useState } from 'react'
+import { FaYinYang } from 'react-icons/fa'
+import { ToastContainer } from 'react-toastify'
+import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
 const localChain: Chain = {
   /** ID in number form */
@@ -58,7 +52,7 @@ const cantoTestnetChain: Chain = {
 
 // Configure chains and providers
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, localChain],
+  [localChain],
   [publicProvider()]
 );
 

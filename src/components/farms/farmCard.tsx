@@ -1,21 +1,24 @@
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
-import { EXPLORER_URL } from "../../data";
-import distributorABI from "../../data/abis/distributor.json";
-import { Farm } from "../../data/farms";
-import { useFarm } from "../../hooks/useFarm";
-import DepositModal from "./depositModal";
-import WithdrawModal from "./withdrawModal";
+import { EXPLORER_URL } from '../../data'
+import distributorABI from '../../data/abis/distributor.json'
+import { Farm } from '../../data/farms'
+import { useFarm } from '../../hooks/useFarm'
+import DepositModal from './depositModal'
+import WithdrawModal from './withdrawModal'
 
 interface Props {
   farm: Farm;
 }
 export default function FarmCard({ farm }: Props) {
   const { farmData } = useFarm(farm);
+  console.log(farmData);
+
+  console.log([farm.poolId, 0]);
   const { config } = usePrepareContractWrite({
     suspense: true,
     addressOrName: farm.distributor,
@@ -23,7 +26,8 @@ export default function FarmCard({ farm }: Props) {
     functionName: "withdraw",
     args: [farm.poolId, 0],
   });
-  const { writeAsync: collect } = useContractWrite(config);
+  const { writeAsync: collect, error } = useContractWrite(config);
+
   const [loading, setLoading] = React.useState(false);
   const [openDeposit, setOpenDeposit] = React.useState(false);
   const [openWithdraw, setOpenWithdraw] = React.useState(false);
@@ -84,7 +88,7 @@ export default function FarmCard({ farm }: Props) {
         <div className="my-auto">{farm.token.name}</div>
         <a
           className="mx-auto"
-          target="__blank"
+          target="_blank"
           href={`${EXPLORER_URL}${farm.token.address}`}
         >
           <div className="text-center text-xs underline flex gap-2 mx-auto">
@@ -101,7 +105,7 @@ export default function FarmCard({ farm }: Props) {
         <div className="flex flex-row justify-between">
           <div className="">Deposited</div>
           <div className="font-bold flex flex-row gap-1">
-            {farmData.userDeposit?.toString() || "???"}
+            {farmData.userDeposit?.toFixed(2) || "???"}
             {farm.lpTokens ? (
               <>
                 <img

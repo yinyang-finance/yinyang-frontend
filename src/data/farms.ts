@@ -37,7 +37,7 @@ export const yinFarms: Farm[] = [
   },
   {
     poolId: 3,
-    token: tokens.note,
+    token: tokens.wcanto,
     reward: tokens.yin,
     multiplier: 1,
     distributor: YIN_DISTRIBUTOR_ADDRESS,
@@ -81,12 +81,12 @@ export const yangFarms: Farm[] = [
 export const zenFarms: Farm[] = [
   {
     poolId: 0,
-    token: tokens.yinNoteLp,
+    token: tokens.yinWCantoLp,
     reward: tokens.zen,
     multiplier: 1,
-    lpTokens: [tokens.yin, tokens.note],
+    lpTokens: [tokens.yin, tokens.wcanto],
     distributor: GARDEN_ADDRESS,
-    totalAllocPoints: 22,
+    totalAllocPoints: 12,
   },
   {
     poolId: 1,
@@ -95,7 +95,7 @@ export const zenFarms: Farm[] = [
     multiplier: 1,
     lpTokens: [tokens.yang, tokens.wcanto],
     distributor: GARDEN_ADDRESS,
-    totalAllocPoints: 22,
+    totalAllocPoints: 12,
   },
   {
     poolId: 2,
@@ -104,15 +104,6 @@ export const zenFarms: Farm[] = [
     multiplier: 10,
     lpTokens: [tokens.zen, tokens.wcanto],
     distributor: GARDEN_ADDRESS,
-    totalAllocPoints: 22,
-  },
-  {
-    poolId: 3,
-    token: tokens.zenNoteLp,
-    reward: tokens.zen,
-    multiplier: 10,
-    lpTokens: [tokens.zen, tokens.note],
-    distributor: GARDEN_ADDRESS,
-    totalAllocPoints: 22,
+    totalAllocPoints: 12,
   },
 ];

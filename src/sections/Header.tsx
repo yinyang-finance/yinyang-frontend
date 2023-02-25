@@ -1,10 +1,10 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import { AiOutlineMenu } from "react-icons/ai";
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { AiOutlineMenu } from 'react-icons/ai'
 
-import Logo from "../components/common/Logo";
+import Logo from '../components/common/Logo'
 
 const links = [
   {
@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <header className="h-15 border-b border-base-300 relative">
-      <div className="absolute container sm:visible invisible left-1/2 -translate-x-1/2 px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="absolute container md:visible invisible left-1/2 -translate-x-1/2 px-4 md:px-6 py-4 flex justify-between items-center">
         <div className="flex flex-row justify-between w-5/6 mx-auto">
           <Logo />
           {/* Desktop */}
@@ -63,7 +63,7 @@ const Header = () => {
           <ConnectButton />
         </div>
       </div>
-      <div className="relative container visible sm:invisible mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="relative container visible md:invisible mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
         {/* Mobile*/}
         <div className="flex flex-row justify-between w-full">
           <Logo className="mx-auto" />

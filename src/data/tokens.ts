@@ -1,26 +1,23 @@
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image'
 
-import cantoLogo from "../assets/canto-network.png";
-import cinuLogo from "../assets/cinu.png";
-import atomLogo from "../assets/cosmos_hub.png";
-import cshibLogo from "../assets/cshib.png";
-import ethLogo from "../assets/ethereum.png";
-import matrixLogo from "../assets/m.png";
-import noteLogo from "../assets/note.png";
-import yangLogo from "../assets/yang.png";
-import yinLogo from "../assets/yin.png";
-import zenLogo from "../assets/zen.png";
+import cantoLogo from '../assets/canto-network.png'
+import cinuLogo from '../assets/cinu.png'
+import atomLogo from '../assets/cosmos_hub.png'
+import cshibLogo from '../assets/cshib.png'
+import ethLogo from '../assets/ethereum.png'
+import matrixLogo from '../assets/m.png'
+import yangLogo from '../assets/yang.png'
+import yinLogo from '../assets/yin.png'
+import zenLogo from '../assets/zen.png'
 import {
-  NOTE_ADDRESS,
   PAIR_YANG_WCANTO_ADDRESS,
-  PAIR_YIN_NOTE_ADDRESS,
-  PAIR_ZEN_NOTE_ADDRESS,
+  PAIR_YIN_WCANTO_ADDRESS,
   PAIR_ZEN_WCANTO_ADDRESS,
   WCANTO_ADDRESS,
   YANG_ADDRESS,
   YIN_ADDRESS,
   ZEN_ADDRESS,
-} from "./addresses";
+} from './addresses'
 
 export interface Token {
   name: string;
@@ -37,13 +34,6 @@ export const tokens = {
     address: WCANTO_ADDRESS,
     decimals: 18,
     logo: cantoLogo,
-  },
-  note: {
-    name: "Note",
-    symbol: "NOTE",
-    address: NOTE_ADDRESS,
-    decimals: 18,
-    logo: noteLogo,
   },
   yin: {
     name: "Yin",
@@ -66,10 +56,10 @@ export const tokens = {
     decimals: 18,
     logo: zenLogo,
   },
-  yinNoteLp: {
-    name: "Yin-Note Canto Dex LP",
-    symbol: "YIN-NOTE LP",
-    address: PAIR_YIN_NOTE_ADDRESS,
+  yinWCantoLp: {
+    name: "Yin-Wcanto Canto Dex LP",
+    symbol: "YIN-WCanto LP",
+    address: PAIR_YIN_WCANTO_ADDRESS,
     decimals: 18,
     logo: cantoLogo,
   },
@@ -84,13 +74,6 @@ export const tokens = {
     name: "Zen-WCanto Canto Dex LP",
     symbol: "ZEN-WCANTO LP",
     address: PAIR_ZEN_WCANTO_ADDRESS,
-    decimals: 18,
-    logo: cantoLogo,
-  },
-  zenNoteLp: {
-    name: "Zen-Note Canto Dex LP",
-    symbol: "ZEN-NOTE LP",
-    address: PAIR_ZEN_NOTE_ADDRESS,
     decimals: 18,
     logo: cantoLogo,
   },

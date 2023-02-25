@@ -3,13 +3,7 @@ import { Interface, Result } from 'ethers/lib/utils'
 import React from 'react'
 import { erc20ABI, useContractReads } from 'wagmi'
 
-import {
-  PAIR_YANG_WCANTO_ADDRESS,
-  PAIR_YIN_NOTE_ADDRESS,
-  PAIR_ZEN_NOTE_ADDRESS,
-  PAIR_ZEN_WCANTO_ADDRESS,
-  tokens,
-} from '../data'
+import { PAIR_YANG_WCANTO_ADDRESS, PAIR_YIN_WCANTO_ADDRESS, PAIR_ZEN_WCANTO_ADDRESS, tokens } from '../data'
 import cantoSwapPairABI from '../data/abis/CantoSwapPair.json'
 import pairABI from '../data/abis/IBaseV1Pair.json'
 
@@ -24,13 +18,13 @@ const getContracts = () => [
     addressOrName: tokens.yin.address,
     contractInterface: new Interface(erc20ABI),
     functionName: "balanceOf",
-    args: [PAIR_YIN_NOTE_ADDRESS],
+    args: [PAIR_YIN_WCANTO_ADDRESS],
   },
   {
-    addressOrName: tokens.note.address,
+    addressOrName: tokens.wcanto.address,
     contractInterface: new Interface(erc20ABI),
     functionName: "balanceOf",
-    args: [PAIR_YIN_NOTE_ADDRESS],
+    args: [PAIR_YIN_WCANTO_ADDRESS],
   },
   {
     addressOrName: PAIR_YANG_WCANTO_ADDRESS,
@@ -45,13 +39,13 @@ const getContracts = () => [
     args: [],
   },
   {
-    addressOrName: PAIR_ZEN_NOTE_ADDRESS,
+    addressOrName: PAIR_ZEN_WCANTO_ADDRESS,
     contractInterface: new Interface(cantoSwapPairABI.abi),
     functionName: "token0",
     args: [],
   },
   {
-    addressOrName: PAIR_ZEN_NOTE_ADDRESS,
+    addressOrName: PAIR_ZEN_WCANTO_ADDRESS,
     contractInterface: new Interface(cantoSwapPairABI.abi),
     functionName: "price0CumulativeLast",
     args: [],

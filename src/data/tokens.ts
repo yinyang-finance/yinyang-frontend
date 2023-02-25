@@ -1,14 +1,15 @@
-import { StaticImageData } from 'next/image'
+import { StaticImageData } from "next/image";
 
-import cantoLogo from '../assets/canto-network.png'
-import cinuLogo from '../assets/cinu.png'
-import atomLogo from '../assets/cosmos_hub.png'
-import cshibLogo from '../assets/cshib.png'
-import ethLogo from '../assets/ethereum.png'
-import noteLogo from '../assets/note.png'
-import yangLogo from '../assets/yang.png'
-import yinLogo from '../assets/yin.png'
-import zenLogo from '../assets/zen.png'
+import cantoLogo from "../assets/canto-network.png";
+import cinuLogo from "../assets/cinu.png";
+import atomLogo from "../assets/cosmos_hub.png";
+import cshibLogo from "../assets/cshib.png";
+import ethLogo from "../assets/ethereum.png";
+import matrixLogo from "../assets/m.png";
+import noteLogo from "../assets/note.png";
+import yangLogo from "../assets/yang.png";
+import yinLogo from "../assets/yin.png";
+import zenLogo from "../assets/zen.png";
 import {
   NOTE_ADDRESS,
   PAIR_YANG_WCANTO_ADDRESS,
@@ -19,7 +20,7 @@ import {
   YANG_ADDRESS,
   YIN_ADDRESS,
   ZEN_ADDRESS,
-} from './addresses'
+} from "./addresses";
 
 export interface Token {
   name: string;
@@ -120,5 +121,12 @@ export const tokens = {
     address: "0xA025ced4aab666c1bbBFd5A224816705b438E50B",
     decimals: 18,
     logo: cshibLogo,
+  },
+  matrix: {
+    name: "Matrix",
+    symbol: "MATRIX",
+    address: "0x8b6e422f7ef6c5dcc0ad0c3dea66efacbb2b78e3",
+    decimals: 18,
+    logo: matrixLogo,
   },
 };

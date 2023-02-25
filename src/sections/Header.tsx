@@ -19,6 +19,10 @@ const links = [
     label: "Temple",
     link: "/temple",
   },
+  {
+    label: "Docs",
+    href: "https://docs.yinyang.fi",
+  },
 ];
 
 const Header = () => {
@@ -27,8 +31,8 @@ const Header = () => {
   console.log(open);
 
   return (
-    <header className="h-15 border-b border-gray-200 relative">
-      <div className="absolute container sm:visible invisible mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+    <header className="h-15 border-b border-base-300 relative">
+      <div className="absolute container sm:visible invisible left-1/2 -translate-x-1/2 px-4 sm:px-6 py-4 flex justify-between items-center">
         <div className="flex flex-row justify-between w-5/6 mx-auto">
           <Logo />
           {/* Desktop */}
@@ -43,9 +47,15 @@ const Header = () => {
                   }`}
                   key={index}
                 >
-                  <Link href={item.link}>
-                    <a>{item.label}</a>
-                  </Link>
+                  {item.link ? (
+                    <Link href={item.link}>
+                      <a>{item.label}</a>
+                    </Link>
+                  ) : (
+                    <a href={item.href!} target="_blank">
+                      {item.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -95,9 +105,15 @@ const Header = () => {
                     }`}
                     key={index}
                   >
-                    <Link href={item.link}>
-                      <a>{item.label}</a>
-                    </Link>
+                    {item.link ? (
+                      <Link href={item.link}>
+                        <a>{item.label}</a>
+                      </Link>
+                    ) : (
+                      <a href={item.href!} target="_blank">
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

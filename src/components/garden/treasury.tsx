@@ -1,9 +1,22 @@
-import { TEMPLE_ADDRESS, tokens } from '../../data'
-import { usePrices } from '../../hooks/usePrices'
-import useTokenBalance from '../../hooks/useTokenBalance'
+import { Interface } from "ethers/lib/utils";
+import { toast } from "react-toastify";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
+
+import { TEMPLE_ADDRESS, tokens } from "../../data";
+import templeABI from "../../data/abis/Temple.json";
+import { usePrices } from "../../hooks/usePrices";
+import useTemple from "../../hooks/useTemple";
+import useTokenBalance from "../../hooks/useTokenBalance";
 
 export default function Treasury() {
+  const { nextEpoch } = useTemple();
   const { prices } = usePrices();
+  const { config } = usePrepareContractWrite({
+    addressOrName: TEMPLE_ADDRESS,
+    contractInterface: new Interface(templeABI.abi),
+    functionName: "harvest",
+  });
+  const { writeAsync: harvest } = useContractWrite(config);
   const { balanceOf: balanceOfYin } = useTokenBalance(
     tokens.yin.address,
     TEMPLE_ADDRESS
@@ -12,6 +25,16 @@ export default function Treasury() {
     tokens.yang.address,
     TEMPLE_ADDRESS
   );
+  const harvestable = !nextEpoch || nextEpoch > new Date();
+
+  const handleHarvest = async () => {
+    if (!harvest) return;
+    try {
+      await harvest();
+    } catch (err) {
+      toast.error(String(err));
+    }
+  };
   console.log(prices);
 
   return (
@@ -52,6 +75,18 @@ export default function Treasury() {
             </div>
           </div>
         </div>
+      </div>
+      <div
+        className={`btn btn-accent btn-full ${
+          harvestable ? "btn-disabled" : ""
+        }`}
+        onClick={handleHarvest}
+      >
+        {harvestable
+          ? `Next harvest in ${
+              nextEpoch ? nextEpoch?.valueOf() / 1000 - Date.now() : "???"
+            }`
+          : `Harvest now!`}
       </div>
     </div>
   );

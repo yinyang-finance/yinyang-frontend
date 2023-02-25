@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
-import useTemple, { Proposal } from "../../hooks/useTemple";
-import VoteModal from "./VoteModal";
+import useTemple, { Proposal } from '../../hooks/useTemple'
+import VoteModal from './VoteModal'
 
 function ProposalList() {
   const { proposals, refetch } = useTemple();
@@ -49,7 +49,12 @@ function ProposalList() {
                 </div>
               </div>
             </th>
-            <td className="text-xl">{proposal.voices.toFixed(3)}</td>
+            <td className="text-xl">
+              {proposal.shares !== 0
+                ? ((proposal.voices / proposal.shares) * 100).toFixed(1)
+                : 0}
+              %
+            </td>
             <th>
               <button
                 className="btn btn-primary"

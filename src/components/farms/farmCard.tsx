@@ -16,9 +16,6 @@ interface Props {
 }
 export default function FarmCard({ farm }: Props) {
   const { farmData } = useFarm(farm);
-  console.log(farmData);
-
-  console.log([farm.poolId, 0]);
   const { config } = usePrepareContractWrite({
     suspense: true,
     addressOrName: farm.distributor,

@@ -1,15 +1,16 @@
-import { Interface } from "ethers/lib/utils";
-import { toast } from "react-toastify";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
-import { TEMPLE_ADDRESS, tokens } from "../../data";
-import templeABI from "../../data/abis/Temple.json";
-import { usePrices } from "../../hooks/usePrices";
-import useTemple from "../../hooks/useTemple";
-import useTokenBalance from "../../hooks/useTokenBalance";
+import { TEMPLE_ADDRESS, tokens } from '../../data'
+import templeABI from '../../data/abis/Temple.json'
+import { usePrices } from '../../hooks/usePrices'
+import useTemple from '../../hooks/useTemple'
+import useTokenBalance from '../../hooks/useTokenBalance'
 
 export default function Treasury() {
-  const { nextEpoch } = useTemple();
+  const { nextEpoch, refetch } = useTemple();
   const { prices } = usePrices();
   const { config } = usePrepareContractWrite({
     addressOrName: TEMPLE_ADDRESS,
@@ -31,11 +32,31 @@ export default function Treasury() {
     if (!harvest) return;
     try {
       await harvest();
+      refetch();
     } catch (err) {
       toast.error(String(err));
     }
   };
-  console.log(prices);
+  // console.log(prices);
+
+  const [times, setTimes] = React.useState<number[]>();
+  React.useEffect(() => {
+    if (nextEpoch) {
+      const interval = setInterval(() => {
+        const secondsLeft = Math.max(
+          (nextEpoch.valueOf() - Date.now()) / 1000,
+          0
+        );
+        const hours = Math.floor(secondsLeft / 3600);
+        const minutes = Math.floor((secondsLeft % 3600) / 60);
+        const seconds = Math.floor(secondsLeft % 60);
+        setTimes([hours, minutes, seconds]);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [nextEpoch]);
+
+  console.log(times);
 
   return (
     <div className="bg-base-200 flex flex-col gap-5 rounded-xl shadow-xl w-fit p-2 m-2 mx-auto">
@@ -48,11 +69,13 @@ export default function Treasury() {
           <div className="text-xl justify-between stat pt-1">
             <div className="stat-title">Tokens held</div>
             <div className="stat-value">
-              {balanceOfYin !== undefined ? balanceOfYin.toNumber() : "???"}
+              {balanceOfYin !== undefined
+                ? balanceOfYin.toNumber().toFixed(2)
+                : "???"}
             </div>
             <div className="stat-desc">
               {balanceOfYin !== undefined && prices
-                ? balanceOfYin.toNumber() * prices.yin
+                ? (balanceOfYin.toNumber() * prices.yin).toFixed(2)
                 : "???"}{" "}
               $
             </div>
@@ -65,11 +88,13 @@ export default function Treasury() {
           <div className="text-xl justify-between stat pt-1">
             <div className="stat-title">Tokens held</div>
             <div className="stat-value">
-              {balanceOfYang !== undefined ? balanceOfYang.toNumber() : "???"}
+              {balanceOfYang !== undefined
+                ? balanceOfYang.toNumber().toFixed(2)
+                : "???"}
             </div>
             <div className="stat-desc">
               {balanceOfYang !== undefined && prices
-                ? balanceOfYang.toNumber() * prices?.yang
+                ? (balanceOfYang.toNumber() * prices?.yang).toFixed(2)
                 : "???"}{" "}
               $
             </div>
@@ -82,11 +107,22 @@ export default function Treasury() {
         }`}
         onClick={handleHarvest}
       >
-        {harvestable
-          ? `Next harvest in ${
-              nextEpoch ? nextEpoch?.valueOf() / 1000 - Date.now() : "???"
-            }`
-          : `Harvest now!`}
+        {harvestable ? (
+          times ? (
+            <div>
+              Next harvest in <br />
+              <span className="countdown text-xl">
+                <span style={{ "--value": times[0] } as any}></span>:
+                <span style={{ "--value": times[1] } as any}></span>:
+                <span style={{ "--value": times[2] } as any}></span>
+              </span>
+            </div>
+          ) : (
+            `Next harvest in ???`
+          )
+        ) : (
+          `Harvest now!`
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { useContractReads } from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { useContractReads } from 'wagmi'
 
-import { TEMPLE_ADDRESS, Token, tokens } from "../data";
-import templeABI from "../data/abis/Temple.json";
+import { TEMPLE_ADDRESS, Token, tokens } from '../data'
+import templeABI from '../data/abis/Temple.json'
 
 export interface Proposal {
   token: Token;
@@ -98,16 +98,27 @@ export default function useTemple() {
         )
         .filter(Boolean);
 
-      return defaultProposals.map(
-        (e) =>
-          votedPropositions.find((f) => e.token.address === f?.token.address) ||
-          e
-      );
+      return defaultProposals
+        .map(
+          (e) =>
+            votedPropositions.find(
+              (f) => e.token.address === f?.token.address
+            ) || e
+        )
+        .map((e) => {
+          e.shares =
+            votedPropositions.length > 0
+              ? votedPropositions
+                  .map((e) => e?.shares)
+                  .reduce((a, b) => (a || 0) + (b || 0)) || 0
+              : 0;
+          return e;
+        });
     }
     return defaultProposals;
   }, [dataPropositions]);
 
-  console.log(dataNumbers, dataPropositions);
+  // console.log(dataNumbers, numbers, dataPropositions);
 
   return { proposals, refetch, ...numbers };
 }

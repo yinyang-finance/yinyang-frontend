@@ -68,7 +68,6 @@ export default function useTemple(): Temple {
   });
   const numbers = React.useMemo(() => {
     if (dataNumbers) {
-      console.log(dataNumbers);
       return {
         numberOfPropositions: Number(dataNumbers[0].toString()),
         currentEpoch: Number(dataNumbers[1].toString()),

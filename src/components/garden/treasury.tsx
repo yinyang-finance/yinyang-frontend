@@ -3,13 +3,13 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
-import { TEMPLE_ADDRESS, tokens } from '../../data'
+import { PAIR_YANG_WCANTO_ADDRESS, PAIR_YIN_WCANTO_ADDRESS, TEMPLE_ADDRESS, tokens } from '../../data'
 import templeABI from '../../data/abis/Temple.json'
 import useTokenBalance from '../../hooks/useTokenBalance'
 import { useYinYang } from '../../hooks/useYinYang'
 
 export default function Treasury() {
-  const { prices, temple } = useYinYang();
+  const { prices, lockedValue, temple } = useYinYang();
   const { config } = usePrepareContractWrite({
     addressOrName: TEMPLE_ADDRESS,
     contractInterface: new Interface(templeABI.abi),
@@ -56,6 +56,27 @@ export default function Treasury() {
   return (
     <div className="bg-base-200 flex flex-col gap-5 rounded-xl shadow-xl w-fit p-2 m-2 mx-auto">
       <div className="text-2xl font-bold text-center">Treasury</div>
+      <div className="stats m-auto">
+        <div className="stat">
+          <div className="stat-title">Total value locked</div>
+          <div className="stat-value">
+            {Object.values(lockedValue)
+              .reduce((a, b) => a + b, 0)
+              .toFixed(2)}
+            $
+          </div>
+          <div className="stat-desc">
+            Including{" "}
+            {[
+              lockedValue[PAIR_YIN_WCANTO_ADDRESS],
+              lockedValue[PAIR_YANG_WCANTO_ADDRESS],
+            ]
+              .reduce((a, b) => a + b, 0)
+              .toFixed(2)}
+            $ of liquidity
+          </div>
+        </div>
+      </div>
       <div className="flex gap-2">
         <div className="bg-base-300 rounded-xl shadow flex flex-col gap-2">
           <img src={tokens.yin.logo.src} className="w-12 h-12 p-1 m-auto" />

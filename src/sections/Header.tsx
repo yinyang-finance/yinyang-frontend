@@ -28,7 +28,6 @@ const links = [
 const Header = () => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  console.log(open);
 
   return (
     <header className="h-15 border-b border-base-300 relative">

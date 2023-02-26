@@ -1,12 +1,15 @@
 import React, { ReactNode } from 'react'
 
-import useTemple, { Proposal } from '../../hooks/useTemple'
+import { tokens } from '../../data'
+import { Proposal } from '../../hooks/useTemple'
+import { useYinYang } from '../../hooks/useYinYang'
 import VoteModal from './VoteModal'
 
 function ProposalList() {
-  const { proposals, refetch } = useTemple();
+  const { temple } = useYinYang();
   const [isOpen, setIsOpen] = React.useState(false);
   const [proposal, setProposal] = React.useState<Proposal>();
+
   return (
     <table className="table w-full">
       {proposal ? (
@@ -15,7 +18,7 @@ function ProposalList() {
           proposal={proposal}
           onClose={() => {
             setIsOpen(false);
-            refetch();
+            temple?.refetch();
           }}
         />
       ) : null}
@@ -29,8 +32,8 @@ function ProposalList() {
       </thead>
       <tbody>
         {/* <!-- row 1 --> */}
-        {proposals.map((proposal) => (
-          <tr>
+        {temple?.proposals.map((proposal) => (
+          <tr key={proposal.token.address}>
             <th>
               <div className="flex items-center space-x-3">
                 <div className="avatar">
@@ -74,8 +77,29 @@ function ProposalList() {
 }
 
 export default function ProposedTokenList() {
+  const { temple, prices } = useYinYang();
   return (
     <div className="flex flex-col gap-5 p-3 bg-base-200 rounded-xl shadow-xl w-fit m-auto">
+      <div className="stats">
+        <div className="stat">
+          <div className="stat-title">Value locked in governance</div>
+          <div className="stat-value">
+            {temple?.proposals[0].shares && prices[tokens.zen.address]
+              ? (
+                  temple?.proposals[0].shares * prices[tokens.zen.address]
+                ).toFixed(3)
+              : "???"}
+            $
+          </div>
+          <div className="stat-desc">
+            {temple?.proposals[0].shares.toFixed(3) || "???"} $ZEN tokens at{" "}
+            {prices[tokens.zen.address]?.toFixed(3) || "???"}$
+          </div>
+          <div className="stat-figure text-secondary w-12 h-12 p-1">
+            <img src={tokens.zen.logo.src} alt={tokens.zen.name} />
+          </div>
+        </div>
+      </div>
       <ProposalList />
     </div>
   );

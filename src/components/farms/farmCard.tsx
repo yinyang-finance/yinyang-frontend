@@ -44,6 +44,12 @@ export default function FarmCard({ farm }: Props) {
     }
   };
 
+  console.log(
+    prices[farm.reward.address],
+    prices[farm.token.address],
+    farmData.totalDeposited
+  );
+
   return (
     <div className="bg-base-200 p-2 rounded-xl shadow-xl w-fit flex flex-col gap-3">
       {openDeposit ? (
@@ -101,12 +107,22 @@ export default function FarmCard({ farm }: Props) {
           <div className="">APR</div>
           <div className="font-bold">
             {prices[farm.reward.address] &&
-            prices[farm.token.address] &&
+            (farmData.lpTokens
+              ? (prices[farmData.lpTokens[0].address] +
+                  prices[farmData.lpTokens[1].address]) /
+                2
+              : prices[farm.token.address]) &&
             farmData.totalDeposited
               ? REWARDS_PER_BLOCK.div(10 ** 18)
                   .mul(5256000) // 6s block for a year
                   .mul(prices[farm.reward.address])
-                  .div(prices[farm.token.address])
+                  .div(
+                    farmData.lpTokens
+                      ? (prices[farmData.lpTokens[0].address] +
+                          prices[farmData.lpTokens[1].address]) /
+                          2
+                      : prices[farm.token.address]
+                  )
                   .div(farmData.totalDeposited)
                   .toNumber()
                   .toFixed(2)

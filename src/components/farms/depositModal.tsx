@@ -99,6 +99,9 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
               isOpen={openWrap}
               onClose={(mutated) => {
                 setOpenWrap(false);
+                if (mutated) {
+                  farm.refetch && farm.refetch();
+                }
               }}
             />
           </>

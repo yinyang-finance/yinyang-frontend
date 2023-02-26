@@ -58,6 +58,7 @@ export default function Treasury() {
       <div className="text-2xl font-bold text-center">Treasury</div>
       <div className="flex gap-2">
         <div className="bg-base-300 rounded-xl shadow flex flex-col gap-2">
+          <img src={tokens.yin.logo.src} className="w-12 h-12 p-1 m-auto" />
           <div className="text-2xl text-center font-bold">
             {tokens.yin.name}
           </div>
@@ -79,6 +80,7 @@ export default function Treasury() {
           </div>
         </div>
         <div className="bg-base-300 rounded-xl shadow flex flex-col gap-2">
+          <img src={tokens.yang.logo.src} className="w-12 h-12 p-1 m-auto" />
           <div className="text-2xl text-center font-bold ">
             {tokens.yang.name}
           </div>

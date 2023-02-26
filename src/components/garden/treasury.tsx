@@ -5,13 +5,13 @@ import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import { TEMPLE_ADDRESS, tokens } from '../../data'
 import templeABI from '../../data/abis/Temple.json'
-import { usePrices } from '../../hooks/usePrices'
 import useTemple from '../../hooks/useTemple'
 import useTokenBalance from '../../hooks/useTokenBalance'
+import { useYinYang } from '../../hooks/useYinYang'
 
 export default function Treasury() {
   const { nextEpoch, refetch } = useTemple();
-  const { prices } = usePrices();
+  const { prices } = useYinYang();
   const { config } = usePrepareContractWrite({
     addressOrName: TEMPLE_ADDRESS,
     contractInterface: new Interface(templeABI.abi),
@@ -37,7 +37,6 @@ export default function Treasury() {
       toast.error(String(err));
     }
   };
-  // console.log(prices);
 
   const [times, setTimes] = React.useState<number[]>();
   React.useEffect(() => {
@@ -55,8 +54,6 @@ export default function Treasury() {
       return () => clearInterval(interval);
     }
   }, [nextEpoch]);
-
-  console.log(times);
 
   return (
     <div className="bg-base-200 flex flex-col gap-5 rounded-xl shadow-xl w-fit p-2 m-2 mx-auto">

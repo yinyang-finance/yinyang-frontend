@@ -12,6 +12,8 @@ import { ToastContainer } from 'react-toastify'
 import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
+import YinYangProvider from '../contexts/Yinying'
+
 const localChain: Chain = {
   /** ID in number form */
   id: 7700,
@@ -82,8 +84,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider enableSystem={true} attribute="class">
           <WagmiConfig client={client}>
             <RainbowKitProvider chains={chains}>
-              <Component {...pageProps} />
-              <ToastContainer position="bottom-right" autoClose={5000} />
+              <YinYangProvider>
+                <Component {...pageProps} />
+                <ToastContainer position="bottom-right" autoClose={5000} />
+              </YinYangProvider>
             </RainbowKitProvider>
           </WagmiConfig>
         </ThemeProvider>

@@ -81,6 +81,7 @@ export default function useTemple() {
   const proposals = React.useMemo(() => {
     if (dataPropositions) {
       const votedPropositions = dataPropositions
+        .filter(Boolean)
         .map((data) =>
           Object.values(tokens).find((e) => e.address === data[0])
             ? {

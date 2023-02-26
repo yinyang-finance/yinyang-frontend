@@ -44,12 +44,6 @@ export default function FarmCard({ farm }: Props) {
     }
   };
 
-  console.log(
-    prices[farm.reward.address],
-    prices[farm.token.address],
-    farmData.totalDeposited
-  );
-
   return (
     <div className="bg-base-200 p-2 rounded-xl shadow-xl w-fit flex flex-col gap-3">
       {openDeposit ? (

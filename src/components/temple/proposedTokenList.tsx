@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
+import { MdHowToVote } from 'react-icons/md'
 
-import { tokens } from '../../data'
+import { EXPLORER_URL, tokens } from '../../data'
 import { Proposal } from '../../hooks/useTemple'
 import { useYinYang } from '../../hooks/useYinYang'
 import VoteModal from './VoteModal'
@@ -25,9 +26,9 @@ function ProposalList() {
       {/* <!-- head --> */}
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Voices</th>
-          <th></th>
+          <th className="bg-base-300">Name</th>
+          <th className="bg-base-300">Voices</th>
+          <th className="bg-base-300"></th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +48,9 @@ function ProposalList() {
                 <div>
                   <div className="font-bold">{proposal.token.symbol}</div>
                   <div className="text-sm opacity-50">
-                    {proposal.token.name}
+                    <a href={`${EXPLORER_URL}${proposal.token.address}`}>
+                      {proposal.token.name}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -67,6 +70,7 @@ function ProposalList() {
                 }}
               >
                 Vote
+                <MdHowToVote className="ml-1" />
               </button>
             </th>
           </tr>
@@ -80,6 +84,7 @@ export default function ProposedTokenList() {
   const { temple, prices } = useYinYang();
   return (
     <div className="flex flex-col gap-5 p-3 bg-base-200 rounded-xl shadow-xl w-fit m-auto">
+      <div className="font-xl text-center text-3xl font-bold">Vote</div>
       <div className="stats">
         <div className="stat">
           <div className="stat-title">Value locked in governance</div>

@@ -1,9 +1,9 @@
 import Decimal from 'decimal.js'
 import { Interface } from 'ethers/lib/utils'
 import React from 'react'
-import { useContractReads } from 'wagmi'
+import { useAccount, useContractReads } from 'wagmi'
 
-import { TEMPLE_ADDRESS, Token, tokens } from '../data'
+import { NULL_ADDRESS, TEMPLE_ADDRESS, Token, tokens } from '../data'
 import templeABI from '../data/abis/Temple.json'
 
 export interface Proposal {
@@ -18,6 +18,7 @@ export interface Temple {
   numberOfPropositions?: number;
   currentEpoch?: number;
   epochStart?: Date;
+  pendingShares?: { token: Token; amount: number }[];
 }
 const defaultProposals: Proposal[] = [
   { token: tokens.yin, voices: 0, shares: 0 },
@@ -28,6 +29,7 @@ const defaultProposals: Proposal[] = [
 ];
 
 export default function useTemple(): Temple {
+  const { address } = useAccount();
   const { data: dataNumbers, refetch } = useContractReads({
     allowFailure: true,
     contracts: [
@@ -51,10 +53,22 @@ export default function useTemple(): Temple {
         contractInterface: new Interface(templeABI.abi),
         functionName: "epochDuration",
       },
+      {
+        addressOrName: TEMPLE_ADDRESS,
+        contractInterface: new Interface(templeABI.abi),
+        functionName: "shares",
+      },
+      {
+        addressOrName: TEMPLE_ADDRESS,
+        contractInterface: new Interface(templeABI.abi),
+        functionName: "pendingVoterShares",
+        args: [address || NULL_ADDRESS],
+      },
     ],
   });
   const numbers = React.useMemo(() => {
     if (dataNumbers) {
+      console.log(dataNumbers);
       return {
         numberOfPropositions: Number(dataNumbers[0].toString()),
         currentEpoch: Number(dataNumbers[1].toString()),
@@ -64,6 +78,13 @@ export default function useTemple(): Temple {
             Number(dataNumbers[3].toString())) *
             1000
         ),
+        shares: new Decimal(dataNumbers[4].toString()).div(10 ** 18).toNumber(),
+        pendingShares: dataNumbers[5].map((e) => ({
+          token: Object.values(tokens).find((t) => t.address === e.token)!,
+          amount: new Decimal(e.amount.toString())
+            .div(10 ** e.decimals)
+            .toNumber(),
+        })),
       };
     }
     return {};
@@ -115,12 +136,7 @@ export default function useTemple(): Temple {
             ) || e
         )
         .map((e) => {
-          e.shares =
-            votedPropositions.length > 0
-              ? votedPropositions
-                  .map((e) => e?.shares)
-                  .reduce((a, b) => (a || 0) + (b || 0)) || 0
-              : 0;
+          e.shares = numbers.shares || 0;
           return e;
         });
     }

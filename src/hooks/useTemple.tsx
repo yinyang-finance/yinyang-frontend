@@ -11,15 +11,23 @@ export interface Proposal {
   voices: number;
   shares: number;
 }
-
+export interface Temple {
+  proposals: Proposal[];
+  refetch: () => void;
+  nextEpoch?: Date;
+  numberOfPropositions?: number;
+  currentEpoch?: number;
+  epochStart?: Date;
+}
 const defaultProposals: Proposal[] = [
   { token: tokens.yin, voices: 0, shares: 0 },
   { token: tokens.yang, voices: 0, shares: 0 },
   { token: tokens.zen, voices: 0, shares: 0 },
+  { token: tokens.wcanto, voices: 0, shares: 0 },
   { token: tokens.matrix, voices: 0, shares: 0 },
 ];
 
-export default function useTemple() {
+export default function useTemple(): Temple {
   const { data: dataNumbers, refetch } = useContractReads({
     allowFailure: true,
     contracts: [
@@ -118,8 +126,6 @@ export default function useTemple() {
     }
     return defaultProposals;
   }, [dataPropositions]);
-
-  // console.log(dataNumbers, numbers, dataPropositions);
 
   return { proposals, refetch, ...numbers };
 }

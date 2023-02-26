@@ -5,12 +5,14 @@ import React from 'react'
 import { erc20ABI, useContractReads } from 'wagmi'
 
 import { PAIR_YANG_WCANTO_ADDRESS, PAIR_YIN_WCANTO_ADDRESS, PAIR_ZEN_WCANTO_ADDRESS, tokens } from '../data'
+import useTemple, { Temple } from '../hooks/useTemple'
 
 interface Prices {
   [key: string]: number;
 }
 interface YinYangContextProps {
   prices: Prices;
+  temple?: Temple;
 }
 export const YinYangContext = React.createContext<YinYangContextProps>({
   prices: {},
@@ -84,10 +86,10 @@ export default function YinYangProvider({
     }, [data, prices[tokens.wcanto.address]]);
   }
 
-  console.log(prices);
+  const temple = useTemple();
 
   return (
-    <YinYangContext.Provider value={{ prices }}>
+    <YinYangContext.Provider value={{ prices, temple }}>
       {children}
     </YinYangContext.Provider>
   );

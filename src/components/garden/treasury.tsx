@@ -5,13 +5,11 @@ import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import { TEMPLE_ADDRESS, tokens } from '../../data'
 import templeABI from '../../data/abis/Temple.json'
-import useTemple from '../../hooks/useTemple'
 import useTokenBalance from '../../hooks/useTokenBalance'
 import { useYinYang } from '../../hooks/useYinYang'
 
 export default function Treasury() {
-  const { nextEpoch, refetch } = useTemple();
-  const { prices } = useYinYang();
+  const { prices, temple } = useYinYang();
   const { config } = usePrepareContractWrite({
     addressOrName: TEMPLE_ADDRESS,
     contractInterface: new Interface(templeABI.abi),
@@ -26,13 +24,13 @@ export default function Treasury() {
     tokens.yang.address,
     TEMPLE_ADDRESS
   );
-  const harvestable = !nextEpoch || nextEpoch > new Date();
+  const harvestable = !temple?.nextEpoch || temple?.nextEpoch > new Date();
 
   const handleHarvest = async () => {
     if (!harvest) return;
     try {
       await harvest();
-      refetch();
+      temple?.refetch();
     } catch (err) {
       toast.error(String(err));
     }
@@ -40,10 +38,10 @@ export default function Treasury() {
 
   const [times, setTimes] = React.useState<number[]>();
   React.useEffect(() => {
-    if (nextEpoch) {
+    if (temple?.nextEpoch) {
       const interval = setInterval(() => {
         const secondsLeft = Math.max(
-          (nextEpoch.valueOf() - Date.now()) / 1000,
+          (temple.nextEpoch!.valueOf() - Date.now()) / 1000,
           0
         );
         const hours = Math.floor(secondsLeft / 3600);
@@ -53,7 +51,7 @@ export default function Treasury() {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [nextEpoch]);
+  }, [temple?.nextEpoch]);
 
   return (
     <div className="bg-base-200 flex flex-col gap-5 rounded-xl shadow-xl w-fit p-2 m-2 mx-auto">

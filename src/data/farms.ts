@@ -55,7 +55,7 @@ export const yangFarms: Farm[] = [
   },
   {
     poolId: 1,
-    token: tokens.cantoShib,
+    token: tokens.cantoInu,
     reward: tokens.yang,
     multiplier: 5,
     distributor: YANG_DISTRIBUTOR_ADDRESS,

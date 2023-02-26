@@ -117,7 +117,7 @@ export default function YinYangProvider({
       ],
     });
     React.useEffect(() => {
-      if (data && prices[tokens.wcanto.address]) {
+      if (data && data[0] && data[1] && prices[tokens.wcanto.address]) {
         const ratio = new Decimal(data[0].toString()).div(
           new Decimal(data[1].toString())
         );

@@ -9,6 +9,14 @@ const Footer = () => {
         <span className="font-bold text-lg mr-2">{APP_NAME}</span> &copy;{" "}
         {new Date().getFullYear()} All Rights Reserved
       </div>
+      <div className="text-center text-sm flex flex-col">
+        <div>
+          <a href="https://t.me/+aVZyKUWivutmZDg0">Telegram</a>
+        </div>
+        <div>
+          <a href="https://twitter.com/YinYangFi">Twitter</a>
+        </div>
+      </div>
     </footer>
   );
 };

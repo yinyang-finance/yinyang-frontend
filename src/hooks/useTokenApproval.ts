@@ -11,6 +11,7 @@ export default function useTokenApproval(
 ) {
   const connectedAccount = useAccount();
   const { config } = usePrepareContractWrite({
+    suspense: true,
     addressOrName,
     contractInterface: new Interface(erc20ABI),
     functionName: "approve",

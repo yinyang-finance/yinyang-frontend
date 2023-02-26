@@ -4,10 +4,11 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
-import { EXPLORER_URL } from '../../data'
+import { EXPLORER_URL, REWARDS_PER_BLOCK } from '../../data'
 import distributorABI from '../../data/abis/distributor.json'
 import { Farm } from '../../data/farms'
 import { useFarm } from '../../hooks/useFarm'
+import { useYinYang } from '../../hooks/useYinYang'
 import DepositModal from './depositModal'
 import WithdrawModal from './withdrawModal'
 
@@ -15,6 +16,7 @@ interface Props {
   farm: Farm;
 }
 export default function FarmCard({ farm }: Props) {
+  const { prices } = useYinYang();
   const { farmData } = useFarm(farm);
   const { config } = usePrepareContractWrite({
     suspense: true,
@@ -96,8 +98,21 @@ export default function FarmCard({ farm }: Props) {
       </div>
       <div className="flex flex-col gap-1 bg-base-300 p-2 rounded">
         <div className="flex flex-row justify-between">
-          <div className="">Multiplier</div>
-          <div className="font-bold">x{farm.multiplier}</div>
+          <div className="">APR</div>
+          <div className="font-bold">
+            {prices[farm.reward.address] &&
+            prices[farm.token.address] &&
+            farmData.totalDeposited
+              ? REWARDS_PER_BLOCK.div(10 ** 18)
+                  .mul(5256000) // 6s block for a year
+                  .mul(prices[farm.reward.address])
+                  .div(prices[farm.token.address])
+                  .div(farmData.totalDeposited)
+                  .toNumber()
+                  .toFixed(2)
+              : "???"}
+            %
+          </div>
         </div>
         <div className="flex flex-row justify-between">
           <div className="">Deposited</div>

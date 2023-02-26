@@ -32,53 +32,56 @@ export default function YinYangProvider({
       )
       .then((res) =>
         setPrices((old) => {
-          old.wcanto = res.data.canto.usd;
+          old[tokens.wcanto.address] = res.data.canto.usd;
           return old;
         })
       );
   }, []);
 
-  const t = {
-    yin: { token: tokens.yin, pair: PAIR_YIN_WCANTO_ADDRESS },
-    yang: { token: tokens.yang, pair: PAIR_YANG_WCANTO_ADDRESS },
-    zen: { token: tokens.zen, pair: PAIR_ZEN_WCANTO_ADDRESS },
-  };
-  for (const [k, v] of Object.entries(t)) {
+  for (const { token, pair } of [
+    { token: tokens.yin, pair: PAIR_YIN_WCANTO_ADDRESS },
+    { token: tokens.yang, pair: PAIR_YANG_WCANTO_ADDRESS },
+    { token: tokens.zen, pair: PAIR_ZEN_WCANTO_ADDRESS },
+  ]) {
     const { data } = useContractReads({
       allowFailure: true,
       contracts: [
         {
-          addressOrName: v.token.address,
+          addressOrName: token.address,
           contractInterface: new Interface(erc20ABI),
           functionName: "balanceOf",
-          args: [v.pair],
+          args: [pair],
         },
         {
           addressOrName: tokens.wcanto.address,
           contractInterface: new Interface(erc20ABI),
           functionName: "balanceOf",
-          args: [v.pair],
+          args: [pair],
         },
       ],
     });
     React.useEffect(() => {
-      if (data && prices.wcanto) {
+      if (data && prices[tokens.wcanto.address]) {
         const ratio = new Decimal(data[0].toString()).div(
           new Decimal(data[1].toString())
         );
         setPrices((old) => {
-          old[k] = new Decimal(prices.wcanto || 0).div(ratio).toNumber();
+          old[token.address] = new Decimal(prices[tokens.wcanto.address] || 0)
+            .div(ratio)
+            .toNumber();
           return old;
         });
         setLockedValue((old) => {
-          if (old[k] === undefined) old[k] = 0;
+          if (old[token.address] === undefined) old[token.address] = 0;
 
-          old[k] += new Decimal(data[1].toString()).div(10 ** 18).toNumber();
+          old[token.address] += new Decimal(data[1].toString())
+            .div(10 ** 18)
+            .toNumber();
 
           return old;
         });
       }
-    }, [data, prices.wcanto]);
+    }, [data, prices[tokens.wcanto.address]]);
   }
 
   console.log(prices);

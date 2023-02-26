@@ -72,7 +72,9 @@ export default function Treasury() {
             </div>
             <div className="stat-desc">
               {balanceOfYin !== undefined && prices
-                ? (balanceOfYin.toNumber() * prices.yin).toFixed(2)
+                ? (
+                    balanceOfYin.toNumber() * prices[tokens.yin.address]
+                  ).toFixed(2)
                 : "???"}{" "}
               $
             </div>
@@ -91,7 +93,9 @@ export default function Treasury() {
             </div>
             <div className="stat-desc">
               {balanceOfYang !== undefined && prices
-                ? (balanceOfYang.toNumber() * prices?.yang).toFixed(2)
+                ? (
+                    balanceOfYang.toNumber() * prices[tokens.yang.address]
+                  ).toFixed(2)
                 : "???"}{" "}
               $
             </div>

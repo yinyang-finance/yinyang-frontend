@@ -51,10 +51,28 @@ const cantoTestnetChain: Chain = {
     blockCreated: 2905789,
   },
 };
+const cantoMainnet: Chain = {
+  /** ID in number form */
+  id: 7700,
+  /** Human-readable name */
+  name: "Canto",
+  /** Internal network name */
+  network: "canto",
+  /** Collection of RPC endpoints */
+  rpcUrls: {
+    default: "https://canto.slingshot.finance",
+    "7700": "https://canto.slingshot.finance",
+  },
+  /** Flag for test networks */
+  multicall: {
+    address: "0xcA11bde05977b3631167028862bE2a173976CA11",
+    blockCreated: 2905789,
+  },
+};
 
 // Configure chains and providers
 const { chains, provider, webSocketProvider } = configureChains(
-  [localChain],
+  [cantoMainnet],
   [publicProvider()]
 );
 

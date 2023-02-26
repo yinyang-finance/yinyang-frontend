@@ -25,7 +25,7 @@ jobs:
           npm i --legacy-peer-deps
           npm run build
           npm run export
-          echo 'app.yinyang.fi' > ./out/CNAME
+          echo 'yinyang.fi' > ./out/CNAME
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

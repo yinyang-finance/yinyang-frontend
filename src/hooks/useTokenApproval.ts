@@ -1,8 +1,14 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { toast } from 'react-toastify'
-import { erc20ABI, useAccount, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { toast } from "react-toastify";
+import {
+  erc20ABI,
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 
 export default function useTokenApproval(
   addressOrName: string,
@@ -11,7 +17,6 @@ export default function useTokenApproval(
 ) {
   const connectedAccount = useAccount();
   const { config } = usePrepareContractWrite({
-    suspense: true,
     addressOrName,
     contractInterface: new Interface(erc20ABI),
     functionName: "approve",

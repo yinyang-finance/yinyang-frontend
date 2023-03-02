@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
-import { MdHowToVote } from 'react-icons/md'
+import numeral from "numeral";
+import React, { ReactNode } from "react";
+import { MdHowToVote } from "react-icons/md";
 
-import { EXPLORER_URL, tokens } from '../../data'
-import { Proposal } from '../../hooks/useTemple'
-import { useYinYang } from '../../hooks/useYinYang'
-import VoteModal from './VoteModal'
+import { EXPLORER_URL, tokens } from "../../data";
+import { Proposal } from "../../hooks/useTemple";
+import { useYinYang } from "../../hooks/useYinYang";
+import VoteModal from "./VoteModal";
 
 function ProposalList() {
   const { temple } = useYinYang();
@@ -90,15 +91,21 @@ export default function ProposedTokenList() {
           <div className="stat-title">Value locked in governance</div>
           <div className="stat-value">
             {temple?.proposals[0].shares && prices[tokens.zen.address]
-              ? (
+              ? numeral(
                   temple?.proposals[0].shares * prices[tokens.zen.address]
-                ).toFixed(3)
+                ).format("aaa.aa")
               : "???"}
             $
           </div>
           <div className="stat-desc">
-            {temple?.proposals[0].shares.toFixed(3) || "???"} $ZEN tokens at{" "}
-            {prices[tokens.zen.address]?.toFixed(3) || "???"}$
+            {temple?.proposals[0].shares
+              ? numeral(temple.proposals[0].shares).format("aaa.aa")
+              : "???"}{" "}
+            $ZEN tokens at{" "}
+            {prices[tokens.zen.address]
+              ? numeral(prices[tokens.zen.address]).format("aaa.aa")
+              : "???"}
+            $
           </div>
           <div className="stat-figure text-secondary w-12 h-12 p-1">
             <img src={tokens.zen.logo.src} alt={tokens.zen.name} />

@@ -1,5 +1,6 @@
 import Decimal from "decimal.js";
 import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -94,7 +95,7 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
             Your balance:{" "}
             <span className="font-bold">
               {farm.userBalance !== undefined
-                ? farm.userBalance.toFixed(2)
+                ? numeral(farm.userBalance).format("aaa.aa")
                 : "??"}{" "}
               {farm.token.symbol}
             </span>

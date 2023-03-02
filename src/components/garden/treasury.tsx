@@ -1,4 +1,5 @@
 import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
 import React from "react";
 import { toast } from "react-toastify";
 import {
@@ -75,19 +76,19 @@ export default function Treasury() {
         <div className="stat">
           <div className="stat-title">Total value locked</div>
           <div className="stat-value">
-            {Object.values(lockedValue)
-              .reduce((a, b) => a + b, 0)
-              .toFixed(2)}
+            {numeral(
+              Object.values(lockedValue).reduce((a, b) => a + b, 0)
+            ).format("aaa.aa")}
             $
           </div>
           <div className="stat-desc">
             Including{" "}
-            {[
-              lockedValue[PAIR_YIN_WCANTO_ADDRESS],
-              lockedValue[PAIR_YANG_WCANTO_ADDRESS],
-            ]
-              .reduce((a, b) => a + b, 0)
-              .toFixed(2)}
+            {numeral(
+              [
+                lockedValue[PAIR_YIN_WCANTO_ADDRESS],
+                lockedValue[PAIR_YANG_WCANTO_ADDRESS],
+              ].reduce((a, b) => a + b, 0)
+            ).format("aaa.aa")}
             $ of liquidity
           </div>
         </div>
@@ -102,14 +103,14 @@ export default function Treasury() {
             <div className="stat-title">Tokens held</div>
             <div className="stat-value">
               {balanceOfYin !== undefined
-                ? balanceOfYin.toNumber().toFixed(2)
+                ? numeral(balanceOfYin.toNumber()).format("aaa.aa")
                 : "???"}
             </div>
             <div className="stat-desc">
               {balanceOfYin !== undefined && prices
-                ? (
+                ? numeral(
                     balanceOfYin.toNumber() * prices[tokens.yin.address]
-                  ).toFixed(2)
+                  ).format("aaa.aa")
                 : "???"}{" "}
               $
             </div>
@@ -124,14 +125,14 @@ export default function Treasury() {
             <div className="stat-title">Tokens held</div>
             <div className="stat-value">
               {balanceOfYang !== undefined
-                ? balanceOfYang.toNumber().toFixed(2)
+                ? numeral(balanceOfYang.toNumber()).format("aaa.aa")
                 : "???"}
             </div>
             <div className="stat-desc">
               {balanceOfYang !== undefined && prices
-                ? (
+                ? numeral(
                     balanceOfYang.toNumber() * prices[tokens.yang.address]
-                  ).toFixed(2)
+                  ).format("aaa.aa")
                 : "???"}{" "}
               $
             </div>

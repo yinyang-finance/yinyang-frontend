@@ -1,4 +1,5 @@
 import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -118,27 +119,52 @@ export default function FarmCard({ farm }: Props) {
                   2
                 : prices[farm.token.address]) &&
               farmData.totalDeposited
-                ? REWARDS_PER_BLOCK.div(10 ** 18)
-                    .mul(5256000) // 6s block for a year
-                    .mul(prices[farm.reward.address])
-                    .div(
-                      farmData.lpTokens
-                        ? (prices[farmData.lpTokens[0].address] +
-                            prices[farmData.lpTokens[1].address]) /
-                            2
-                        : prices[farm.token.address]
-                    )
-                    .div(farmData.totalDeposited)
-                    .toNumber()
-                    .toFixed(2)
+                ? numeral(
+                    REWARDS_PER_BLOCK.div(10 ** 18)
+                      .mul(5256000) // 6s block for a year
+                      .mul(prices[farm.reward.address])
+                      .div(
+                        farmData.lpTokens
+                          ? (prices[farmData.lpTokens[0].address] +
+                              prices[farmData.lpTokens[1].address]) /
+                              2
+                          : prices[farm.token.address]
+                      )
+                      .div(farmData.totalDeposited)
+                      .toNumber()
+                  ).format("aaa.aa")
                 : "???"}
               %
             </div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="">Deposited</div>
+            <div className="">Total deposited</div>
             <div className="font-bold flex flex-row gap-1">
-              {farmData.userDeposit?.toFixed(2) || "???"}
+              {farmData.totalDeposited
+                ? numeral(farmData.totalDeposited).format("aaa.aa")
+                : "???"}
+              {farm.lpTokens ? (
+                <>
+                  <img
+                    className="w-4 h-4 my-auto"
+                    src={farm.lpTokens[0].logo.src}
+                  />
+                  <img
+                    className="w-4 h-4 my-auto"
+                    src={farm.lpTokens[1].logo.src}
+                  />
+                </>
+              ) : (
+                <img className="w-4 h-4 my-auto" src={farm.token.logo.src} />
+              )}
+            </div>
+          </div>
+          <div className="flex flex-row justify-between">
+            <div className="">User deposit</div>
+            <div className="font-bold flex flex-row gap-1">
+              {farmData.userDeposit
+                ? numeral(farmData.userDeposit).format("aaa.aa")
+                : "???"}
               {farm.lpTokens ? (
                 <>
                   <img
@@ -158,7 +184,11 @@ export default function FarmCard({ farm }: Props) {
           <div className="flex flex-row justify-between">
             <div className="">Pending</div>
             <div className="font-bold flex flex-row gap-1">
-              <div>{farmData.userRewards?.toFixed(2) || "??"}</div>
+              <div>
+                {farmData.userRewards
+                  ? numeral(farmData.userRewards).format("aaa.aa")
+                  : "??"}
+              </div>
               <img className="w-4 h-4 my-auto" src={farm.reward.logo.src} />
             </div>
           </div>

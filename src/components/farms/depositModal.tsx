@@ -3,7 +3,11 @@ import { Interface } from "ethers/lib/utils";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
 import distributorABI from "../../data/abis/distributor.json";
 import { tokens } from "../../data/tokens";
@@ -33,7 +37,14 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
       new Decimal(amount || 0).mul(10 ** (farm.token.decimals || 0)).toHex(),
     ],
   });
-  const { writeAsync: deposit } = useContractWrite(config);
+  const { writeAsync: deposit, data } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      onClose(true);
+      toast.success(`Successfully deposited ${amount} ${farm.token.name}`);
+    },
+  });
 
   const handleDeposit = React.useCallback(async () => {
     if (!deposit) return;
@@ -41,7 +52,6 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
     setLoading(true);
     try {
       await deposit();
-      onClose(true);
     } catch (err) {
       toast.error(String(err));
     } finally {

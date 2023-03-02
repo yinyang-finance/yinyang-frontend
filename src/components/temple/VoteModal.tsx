@@ -8,6 +8,7 @@ import {
   useContractReads,
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
 
 import { NULL_ADDRESS, TEMPLE_ADDRESS } from "../../data";
@@ -50,7 +51,14 @@ export default function VoteModal({ proposal, isOpen, onClose }: Props) {
       amount ? new Decimal(amount).mul(10 ** 18).toString() : 0,
     ],
   });
-  const { writeAsync: vote } = useContractWrite(config);
+  const { writeAsync: vote, data: dataWrite } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: dataWrite?.hash,
+    onSuccess: () => {
+      onClose(true);
+      toast.success(`Successfully voted for ${proposal.token.name}`);
+    },
+  });
 
   const handleVote = async () => {
     if (!vote) return;

@@ -1,11 +1,17 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { toast } from 'react-toastify'
-import { useAccount, useBalance, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { toast } from "react-toastify";
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import IWCantoABI from '../../data/abis/IWCanto.json'
-import { tokens } from '../../data/tokens'
+import IWCantoABI from "../../data/abis/IWCanto.json";
+import { tokens } from "../../data/tokens";
 
 interface Props {
   isOpen: boolean;
@@ -26,14 +32,15 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
     functionName: "deposit",
     overrides: { value: new Decimal(amount).mul(10 ** 18).toString() },
   });
-  const {
-    data,
-    status,
-    isLoading,
-    isSuccess,
-    // write: deposit,
-    writeAsync: deposit,
-  } = useContractWrite(config);
+  const { data, writeAsync: deposit } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      onClose(true);
+      refetch();
+      toast.success(`Successfully wrapped ${amount} Canto`);
+    },
+  });
 
   const handleDeposit = async () => {
     if (!deposit) return;
@@ -41,8 +48,6 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
     setLoading(true);
     try {
       await deposit();
-      refetch();
-      onClose(true);
     } catch (err) {
       toast.error(String(err));
     } finally {

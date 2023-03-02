@@ -1,13 +1,17 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { toast } from 'react-toastify'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { toast } from "react-toastify";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { YANG_DISTRIBUTOR_ADDRESS } from '../../data'
-import distributorABI from '../../data/abis/distributor.json'
-import { FarmData } from '../../hooks/useFarm'
-import useTokenBalance from '../../hooks/useTokenBalance'
+import { YANG_DISTRIBUTOR_ADDRESS } from "../../data";
+import distributorABI from "../../data/abis/distributor.json";
+import { FarmData } from "../../hooks/useFarm";
+import useTokenBalance from "../../hooks/useTokenBalance";
 
 interface Props {
   farm: FarmData;
@@ -21,7 +25,7 @@ export default function WithdrawModal({
   isOpen,
   onClose,
 }: Props) {
-  const { decimals, balanceOf, refetch } = useTokenBalance(farm.token.address);
+  const { decimals, refetch } = useTokenBalance(farm.token.address);
   const [loading, setLoading] = React.useState(false);
   const [amount, setAmount] = React.useState<number>();
   const { config } = usePrepareContractWrite({
@@ -33,7 +37,15 @@ export default function WithdrawModal({
       new Decimal(amount || 0).mul(10 ** (decimals || 0)).toHex(),
     ],
   });
-  const { writeAsync: withdraw } = useContractWrite(config);
+  const { writeAsync: withdraw, data } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      refetch();
+      onClose(true);
+      toast.success(`Successfully withdrew ${amount} ${farm.token.name}`);
+    },
+  });
 
   const handleDeposit = async () => {
     if (!withdraw) return;
@@ -41,8 +53,6 @@ export default function WithdrawModal({
     setLoading(true);
     try {
       await withdraw();
-      refetch();
-      onClose(true);
     } catch (err) {
       toast.error(String(err));
     } finally {

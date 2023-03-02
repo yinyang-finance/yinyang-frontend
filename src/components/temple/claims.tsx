@@ -1,12 +1,16 @@
-import { Interface } from 'ethers/lib/utils'
-import { useState } from 'react'
-import { BiCoinStack } from 'react-icons/bi'
-import { toast } from 'react-toastify'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { Interface } from "ethers/lib/utils";
+import { useState } from "react";
+import { BiCoinStack } from "react-icons/bi";
+import { toast } from "react-toastify";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { TEMPLE_ADDRESS } from '../../data'
-import templeABI from '../../data/abis/Temple.json'
-import { useYinYang } from '../../hooks/useYinYang'
+import { TEMPLE_ADDRESS } from "../../data";
+import templeABI from "../../data/abis/Temple.json";
+import { useYinYang } from "../../hooks/useYinYang";
 
 export default function Claims() {
   const { temple } = useYinYang();
@@ -15,7 +19,14 @@ export default function Claims() {
     contractInterface: new Interface(templeABI.abi),
     functionName: "claimAllVoterShares",
   });
-  const { writeAsync: claimAll } = useContractWrite(config);
+  const { writeAsync: claimAll, data } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      temple?.refetch();
+      toast.success(`Successfully claimed tokens`);
+    },
+  });
   const [loading, setLoading] = useState(false);
 
   const handleClaim = async () => {

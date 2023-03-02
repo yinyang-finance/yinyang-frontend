@@ -8,7 +8,10 @@ import {
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
+
+import { tokens } from "../data";
 
 export default function useTokenApproval(
   addressOrName: string,
@@ -22,25 +25,32 @@ export default function useTokenApproval(
     functionName: "approve",
     args: [spender, new Decimal(2).pow(256).sub(1).toHex()],
   });
-  const { writeAsync: approve } = useContractWrite(config);
+  const { writeAsync: approve, data: writeData } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: writeData?.hash.toString(),
+    onSuccess: () => {
+      refetch();
+      toast.success(
+        `Approved token ${
+          Object.values(tokens).find((e) => e.address === addressOrName)
+            ?.name || addressOrName
+        }`
+      );
+    },
+  });
   const { data, refetch } = useContractRead({
     addressOrName,
     contractInterface: new Interface(erc20ABI),
     functionName: "allowance",
     args: [account ? account : connectedAccount.address, spender],
   });
-  const [loading, setLoading] = React.useState(false);
 
   const handleApprove = async () => {
     if (approve) {
-      setLoading(true);
       try {
         await approve();
-        refetch();
       } catch (err) {
         toast.error(String(err));
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -48,6 +58,6 @@ export default function useTokenApproval(
   return {
     approve: handleApprove,
     allowance: data ? new Decimal(data.toString()) : new Decimal(0),
-    isApproving: loading,
+    isApproving: status === "loading",
   };
 }

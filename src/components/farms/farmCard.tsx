@@ -2,7 +2,11 @@ import { Interface } from "ethers/lib/utils";
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
 import { EXPLORER_URL, REWARDS_PER_BLOCK } from "../../data";
 import distributorABI from "../../data/abis/distributor.json";
@@ -25,7 +29,13 @@ export default function FarmCard({ farm }: Props) {
     functionName: "withdraw",
     args: [farm.poolId, 0],
   });
-  const { writeAsync: collect } = useContractWrite(config);
+  const { writeAsync: collect, data } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      toast.success(`Successfully collected ${farm.reward.name}`);
+    },
+  });
 
   const [loading, setLoading] = React.useState(false);
   const [openDeposit, setOpenDeposit] = React.useState(false);

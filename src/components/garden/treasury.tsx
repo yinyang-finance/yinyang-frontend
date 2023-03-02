@@ -1,12 +1,21 @@
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { toast } from 'react-toastify'
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { toast } from "react-toastify";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { PAIR_YANG_WCANTO_ADDRESS, PAIR_YIN_WCANTO_ADDRESS, TEMPLE_ADDRESS, tokens } from '../../data'
-import templeABI from '../../data/abis/Temple.json'
-import useTokenBalance from '../../hooks/useTokenBalance'
-import { useYinYang } from '../../hooks/useYinYang'
+import {
+  PAIR_YANG_WCANTO_ADDRESS,
+  PAIR_YIN_WCANTO_ADDRESS,
+  TEMPLE_ADDRESS,
+  tokens,
+} from "../../data";
+import templeABI from "../../data/abis/Temple.json";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { useYinYang } from "../../hooks/useYinYang";
 
 export default function Treasury() {
   const { prices, lockedValue, temple } = useYinYang();
@@ -15,7 +24,14 @@ export default function Treasury() {
     contractInterface: new Interface(templeABI.abi),
     functionName: "harvest",
   });
-  const { writeAsync: harvest } = useContractWrite(config);
+  const { writeAsync: harvest, data } = useContractWrite(config);
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      temple?.refetch();
+      toast.success(`Successfully harvested`);
+    },
+  });
   const { balanceOf: balanceOfYin } = useTokenBalance(
     tokens.yin.address,
     TEMPLE_ADDRESS
@@ -30,7 +46,6 @@ export default function Treasury() {
     if (!harvest) return;
     try {
       await harvest();
-      temple?.refetch();
     } catch (err) {
       toast.error(String(err));
     }

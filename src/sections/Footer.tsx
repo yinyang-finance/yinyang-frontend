@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import { APP_NAME } from '../data'
+import { APP_NAME } from "../data";
 
 const Footer = () => {
   return (
@@ -15,6 +15,9 @@ const Footer = () => {
         </div>
         <div>
           <a href="https://twitter.com/YinYangFi">Twitter</a>
+        </div>
+        <div>
+          <a href="https://github.com/yinyang-finance">Github</a>
         </div>
       </div>
     </footer>

@@ -79,7 +79,7 @@ const parseUserInfo = (userInfo: Result) => {
 export function useFarm(farm: Farm) {
   const { address } = useAccount();
   const contracts = getContracts(farm, address);
-  const { data, status, refetch } = useContractReads({
+  const { data, refetch } = useContractReads({
     allowFailure: true,
     contracts,
   });

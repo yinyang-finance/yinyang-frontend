@@ -1,17 +1,12 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import { YANG_DISTRIBUTOR_ADDRESS } from "../../data";
-import distributorABI from "../../data/abis/distributor.json";
-import { FarmData } from "../../hooks/useFarm";
-import useTokenBalance from "../../hooks/useTokenBalance";
+import distributorABI from '../../data/abis/distributor.json'
+import { FarmData } from '../../hooks/useFarm'
+import useTokenBalance from '../../hooks/useTokenBalance'
 
 interface Props {
   farm: FarmData;
@@ -28,8 +23,8 @@ export default function WithdrawModal({
   const { decimals, refetch } = useTokenBalance(farm.token.address);
   const [loading, setLoading] = React.useState(false);
   const [amount, setAmount] = React.useState<number>();
-  const { config } = usePrepareContractWrite({
-    addressOrName: YANG_DISTRIBUTOR_ADDRESS,
+  const { config, error } = usePrepareContractWrite({
+    addressOrName: farm.distributor,
     contractInterface: new Interface(distributorABI.abi),
     functionName: "withdraw",
     args: [
@@ -37,13 +32,31 @@ export default function WithdrawModal({
       new Decimal(amount || 0).mul(10 ** (decimals || 0)).toHex(),
     ],
   });
-  const { writeAsync: withdraw, data } = useContractWrite(config);
+  const { writeAsync: withdraw, data: dataWithdraw } = useContractWrite(config);
   useWaitForTransaction({
-    hash: data?.hash,
+    hash: dataWithdraw?.hash,
     onSuccess: () => {
       refetch();
       onClose(true);
       toast.success(`Successfully withdrew ${amount} ${farm.token.name}`);
+    },
+  });
+  const { config: configEmergencyWithdraw } = usePrepareContractWrite({
+    addressOrName: farm.distributor,
+    contractInterface: new Interface(distributorABI.abi),
+    functionName: "emergencyWithdraw",
+    args: [farm.poolId],
+  });
+  const { writeAsync: emergencyWithdraw, data: dataEmergencyWithdraw } =
+    useContractWrite(configEmergencyWithdraw);
+  useWaitForTransaction({
+    hash: dataEmergencyWithdraw?.hash,
+    onSuccess: () => {
+      refetch();
+      onClose(true);
+      toast.success(
+        `Successfully emergency withdrew ${amount} ${farm.token.name}`
+      );
     },
   });
 
@@ -97,6 +110,17 @@ export default function WithdrawModal({
             Confirm
           </div>
         </div>
+        {error ? (
+          <div className="mx-auto text-center">
+            <div>Something went wrong...</div>
+            <div
+              className="btn btn-error"
+              onClick={() => emergencyWithdraw && emergencyWithdraw()}
+            >
+              withdraw without rewards
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

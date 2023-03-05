@@ -1,15 +1,11 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import { erc20ABI, useContractReads } from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import { erc20ABI, useContractReads } from 'wagmi'
 
-import {
-  tokens,
-  YANG_DISTRIBUTOR_ADDRESS,
-  YIN_DISTRIBUTOR_ADDRESS,
-} from "../../data";
-import { yangFarms, yinFarms } from "../../data/farms";
-import FarmCard from "./farmCard";
+import { tokens, YANG_DISTRIBUTOR_ADDRESS, YIN_DISTRIBUTOR_ADDRESS } from '../../data'
+import { yangFarms, yinFarms } from '../../data/farms'
+import FarmCard from './farmCard'
 
 export default function FarmsContent() {
   const { data } = useContractReads({
@@ -43,10 +39,13 @@ export default function FarmsContent() {
 
   const yinEmittedSupply =
     data && data[0] && data[2]
-      ? new Decimal(data[2].toString())
-          .sub(new Decimal(data[0].toString()))
-          .div(new Decimal(data[2].toString()))
-          .toNumber()
+      ? Math.max(
+          new Decimal(data[2].toString())
+            .sub(new Decimal(data[0].toString()))
+            .div(new Decimal(data[2].toString()))
+            .toNumber(),
+          0
+        )
       : 0;
   const yangEmittedSupply =
     data && data[1] && data[3]
@@ -55,8 +54,6 @@ export default function FarmsContent() {
           .div(new Decimal(data[3].toString()))
           .toNumber()
       : 0;
-
-  console.log(yinEmittedSupply, yangEmittedSupply);
 
   return (
     <section className="flex flex-col justify-center items-center space-y-10 mt-12 p-3">

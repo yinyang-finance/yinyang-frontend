@@ -1,22 +1,18 @@
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import React from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import React from 'react'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import { EXPLORER_URL, REWARDS_PER_BLOCK } from "../../data";
-import distributorABI from "../../data/abis/distributor.json";
-import { Farm } from "../../data/farms";
-import { useFarm } from "../../hooks/useFarm";
-import { useYinYang } from "../../hooks/useYinYang";
-import ErrorBoundary from "../common/ErrorBoundary";
-import DepositModal from "./depositModal";
-import WithdrawModal from "./withdrawModal";
+import { EXPLORER_URL, REWARDS_PER_BLOCK } from '../../data'
+import distributorABI from '../../data/abis/distributor.json'
+import { Farm } from '../../data/farms'
+import { useFarm } from '../../hooks/useFarm'
+import { useYinYang } from '../../hooks/useYinYang'
+import ErrorBoundary from '../common/ErrorBoundary'
+import DepositModal from './depositModal'
+import WithdrawModal from './withdrawModal'
 
 interface Props {
   farm: Farm;

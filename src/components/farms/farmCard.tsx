@@ -118,6 +118,8 @@ export default function FarmCard({ farm }: Props) {
                 ? numeral(
                     REWARDS_PER_BLOCK.div(10 ** 18)
                       .mul(5256000) // 6s block for a year
+                      .mul(farmData.multiplier)
+                      .div(farmData.totalAllocPoints)
                       .mul(prices[farm.reward.address])
                       .div(
                         farmData.lpTokens

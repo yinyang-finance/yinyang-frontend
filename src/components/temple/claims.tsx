@@ -1,16 +1,12 @@
-import { Interface } from "ethers/lib/utils";
-import { useState } from "react";
-import { BiCoinStack } from "react-icons/bi";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import { useState } from 'react'
+import { BiCoinStack } from 'react-icons/bi'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import { TEMPLE_ADDRESS } from "../../data";
-import templeABI from "../../data/abis/Temple.json";
-import { useYinYang } from "../../hooks/useYinYang";
+import { TEMPLE_ADDRESS } from '../../data'
+import templeABI from '../../data/abis/Temple.json'
+import { useYinYang } from '../../hooks/useYinYang'
 
 export default function Claims() {
   const { temple } = useYinYang();
@@ -42,6 +38,8 @@ export default function Claims() {
       }
     }
   };
+
+  console.log(temple);
 
   return temple?.pendingShares && (temple?.pendingShares?.length || 0) > 0 ? (
     <div className="p-3 bg-base-200 w-fit m-auto rounded-xl">

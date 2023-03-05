@@ -31,7 +31,7 @@ const Header = () => {
 
   return (
     <header className="h-15 border-b border-base-300 relative">
-      <div className="absolute container md:visible invisible left-1/2 -translate-x-1/2 px-4 md:px-6 py-4 flex justify-between items-center">
+      <div className="relative container md:block hidden left-1/2 -translate-x-1/2 px-4 md:px-6 py-4 flex justify-between items-center">
         <div className="flex flex-row justify-between w-5/6 mx-auto">
           <Logo />
           {/* Desktop */}
@@ -62,7 +62,7 @@ const Header = () => {
           <ConnectButton />
         </div>
       </div>
-      <div className="relative container visible md:invisible mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+      <div className="relative container block md:hidden mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
         {/* Mobile*/}
         <div className="flex flex-row justify-between w-full">
           <Logo className="mx-auto" />

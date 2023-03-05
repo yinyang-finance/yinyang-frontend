@@ -1,10 +1,10 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { useAccount, useContractReads } from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { useAccount, useContractReads } from 'wagmi'
 
-import { NULL_ADDRESS, TEMPLE_ADDRESS, Token, tokens } from "../data";
-import templeABI from "../data/abis/Temple.json";
+import { NULL_ADDRESS, TEMPLE_ADDRESS, Token, tokens } from '../data'
+import templeABI from '../data/abis/Temple.json'
 
 export interface Proposal {
   token: Token;

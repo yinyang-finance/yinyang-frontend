@@ -18,6 +18,7 @@ export interface Temple {
   numberOfPropositions?: number;
   currentEpoch?: number;
   epochStart?: Date;
+  lastUserUpdate?: number;
   pendingShares?: { token: Token; amount: number }[];
 }
 const defaultProposals: Proposal[] = [
@@ -61,6 +62,12 @@ export default function useTemple(): Temple {
       {
         addressOrName: TEMPLE_ADDRESS,
         contractInterface: new Interface(templeABI.abi),
+        functionName: "lastUpdate",
+        args: [address || NULL_ADDRESS],
+      },
+      {
+        addressOrName: TEMPLE_ADDRESS,
+        contractInterface: new Interface(templeABI.abi),
         functionName: "pendingVoterShares",
         args: [address || NULL_ADDRESS],
       },
@@ -78,7 +85,8 @@ export default function useTemple(): Temple {
             1000
         ),
         shares: new Decimal(dataNumbers[4].toString()).div(10 ** 18).toNumber(),
-        pendingShares: dataNumbers[5].map((e) => ({
+        lastUserUpdate: Number(dataNumbers[5].toString()),
+        pendingShares: dataNumbers[6].map((e) => ({
           token: Object.values(tokens).find((t) => t.address === e.token)!,
           amount: new Decimal(e.amount.toString())
             .div(10 ** e.decimals)
@@ -95,7 +103,7 @@ export default function useTemple(): Temple {
     contracts: numbers?.numberOfPropositions
       ? Array(numbers?.numberOfPropositions)
           .fill(0)
-          .map((e, i) => i)
+          .map((_, i) => i)
           .filter((e) => -e > -3)
           .map((_, i) => ({
             addressOrName: TEMPLE_ADDRESS,

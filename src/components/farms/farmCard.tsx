@@ -1,18 +1,22 @@
-import { Interface } from 'ethers/lib/utils'
-import numeral from 'numeral'
-import React from 'react'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { toast } from 'react-toastify'
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
+import React from "react";
+import { FaExternalLinkAlt, FaQuestionCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { EXPLORER_URL, REWARDS_PER_BLOCK } from '../../data'
-import distributorABI from '../../data/abis/distributor.json'
-import { Farm } from '../../data/farms'
-import { useFarm } from '../../hooks/useFarm'
-import { useYinYang } from '../../hooks/useYinYang'
-import ErrorBoundary from '../common/ErrorBoundary'
-import DepositModal from './depositModal'
-import WithdrawModal from './withdrawModal'
+import { EXPLORER_URL, REWARDS_PER_BLOCK } from "../../data";
+import distributorABI from "../../data/abis/distributor.json";
+import { Farm } from "../../data/farms";
+import { useFarm } from "../../hooks/useFarm";
+import { useYinYang } from "../../hooks/useYinYang";
+import ErrorBoundary from "../common/ErrorBoundary";
+import DepositModal from "./depositModal";
+import WithdrawModal from "./withdrawModal";
 
 interface Props {
   farm: Farm;
@@ -93,6 +97,11 @@ export default function FarmCard({ farm }: Props) {
             </div>
           )}
           <div className="my-auto">{farm.token.name}</div>
+          {farm.depositFee ? (
+            <div className="text-xs my-auto">
+              {farm.depositFee}% deposit fee
+            </div>
+          ) : null}
           <a
             className="mx-auto"
             target="_blank"
@@ -106,7 +115,15 @@ export default function FarmCard({ farm }: Props) {
         </div>
         <div className="flex flex-col gap-1 bg-base-300 p-2 rounded">
           <div className="flex flex-row justify-between">
-            <div className="">APR</div>
+            <div className="flex flex-row justify-center gap-1">
+              <div>APR</div>
+              <div
+                className="my-auto tooltip"
+                data-tip="APR for each additional unit deposited at current prices"
+              >
+                <FaQuestionCircle />
+              </div>
+            </div>
             <div className="font-bold">
               {prices[farm.reward.address] &&
               (farmData.lpTokens
@@ -128,7 +145,7 @@ export default function FarmCard({ farm }: Props) {
                               2
                           : prices[farm.token.address]
                       )
-                      .div(farmData.totalDeposited)
+                      .div(farmData.totalDeposited || 1)
                       .toNumber()
                   ).format("aaa.aa")
                 : "???"}

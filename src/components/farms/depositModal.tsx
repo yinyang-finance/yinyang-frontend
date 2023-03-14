@@ -1,20 +1,16 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import React from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import React from 'react'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import distributorABI from "../../data/abis/distributor.json";
-import { tokens } from "../../data/tokens";
-import { FarmData } from "../../hooks/useFarm";
-import useTokenApproval from "../../hooks/useTokenApproval";
-import WrappedCantoModal from "./wrapCantoModal";
+import distributorABI from '../../data/abis/distributor.json'
+import { tokens } from '../../data/tokens'
+import { FarmData } from '../../hooks/useFarm'
+import useTokenApproval from '../../hooks/useTokenApproval'
+import WrappedCantoModal from './wrapCantoModal'
 
 interface Props {
   farm: FarmData;
@@ -119,7 +115,7 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
         ) : null}
         {farm.lpTokens !== undefined ? (
           <a
-            href={`https://www.cantoswap.fi/#/add/v2/${farm.lpTokens[0].address}/${farm.lpTokens[1].address}`}
+            href={`https://velocimeter.xyz/liquidity/${farm.token.address}`}
             target="__blank"
             className="mx-auto"
           >

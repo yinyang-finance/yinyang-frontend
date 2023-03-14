@@ -1,12 +1,17 @@
-import { Interface } from 'ethers/lib/utils'
-import { useState } from 'react'
-import { BiCoinStack } from 'react-icons/bi'
-import { toast } from 'react-toastify'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { Interface } from "ethers/lib/utils";
+import { useState } from "react";
+import { BiCoinStack } from "react-icons/bi";
+import { toast } from "react-toastify";
+import {
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
-import { TEMPLE_ADDRESS } from '../../data'
-import templeABI from '../../data/abis/Temple.json'
-import { useYinYang } from '../../hooks/useYinYang'
+import { TEMPLE_ADDRESS } from "../../data";
+import templeABI from "../../data/abis/Temple.json";
+import { useYinYang } from "../../hooks/useYinYang";
 
 export default function Claims() {
   const { address } = useAccount();
@@ -28,7 +33,7 @@ export default function Claims() {
     addressOrName: TEMPLE_ADDRESS,
     contractInterface: new Interface(templeABI.abi),
     functionName: "updateUserAccount",
-    args: [address],
+    args: [address, temple?.currentEpoch],
   });
   const { writeAsync: updateUser, data: dataUpdate } =
     useContractWrite(configUpdate);

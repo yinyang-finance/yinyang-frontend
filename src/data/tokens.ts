@@ -99,9 +99,9 @@ export const tokens = {
     logo: cinuLogo,
   },
   cantoShib: {
-    name: "Canto Shib",
-    symbol: "cShib",
-    address: "0xA025ced4aab666c1bbBFd5A224816705b438E50B",
+    name: "Canto Bonk",
+    symbol: "cBonk",
+    address: "0x38D11B40D2173009aDB245b869e90525950aE345",
     decimals: 18,
     logo: cshibLogo,
   },

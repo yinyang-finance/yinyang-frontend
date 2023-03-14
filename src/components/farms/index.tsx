@@ -1,11 +1,15 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import numeral from 'numeral'
-import { erc20ABI, useContractReads } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
+import { erc20ABI, useContractReads } from "wagmi";
 
-import { tokens, YANG_DISTRIBUTOR_ADDRESS, YIN_DISTRIBUTOR_ADDRESS } from '../../data'
-import { yangFarms, yinFarms } from '../../data/farms'
-import FarmCard from './farmCard'
+import {
+  tokens,
+  YANG_DISTRIBUTOR_ADDRESS,
+  YIN_DISTRIBUTOR_ADDRESS,
+} from "../../data";
+import { yangFarms, yinFarms } from "../../data/farms";
+import FarmCard from "./farmCard";
 
 export default function FarmsContent() {
   const { data } = useContractReads({
@@ -35,7 +39,6 @@ export default function FarmsContent() {
       },
     ],
   });
-  console.log(data);
 
   const yinEmittedSupply =
     data && data[0] && data[2]

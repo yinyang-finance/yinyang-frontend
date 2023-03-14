@@ -30,7 +30,7 @@ export default function WrappedCantoModal({ isOpen, onClose }: Props) {
     addressOrName: tokens.wcanto.address,
     contractInterface: new Interface(IWCantoABI.abi),
     functionName: "deposit",
-    overrides: { value: new Decimal(amount).mul(10 ** 18).toString() },
+    overrides: { value: new Decimal(amount).mul(10 ** 18).toHex() },
   });
   const { data, writeAsync: deposit } = useContractWrite(config);
   useWaitForTransaction({

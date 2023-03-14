@@ -1,8 +1,8 @@
-import axios from "axios";
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { erc20ABI, useContractReads } from "wagmi";
+import axios from 'axios'
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { erc20ABI, useContractReads } from 'wagmi'
 
 import {
   PAIR_YANG_WCANTO_ADDRESS,
@@ -11,8 +11,8 @@ import {
   tokens,
   YANG_ADDER_ADDRESS,
   YIN_ADDER_ADDRESS,
-} from "../data";
-import useTemple, { Temple } from "../hooks/useTemple";
+} from '../data'
+import useTemple, { Temple } from '../hooks/useTemple'
 
 interface Prices {
   [key: string]: number;

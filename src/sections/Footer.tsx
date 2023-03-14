@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-import { APP_NAME } from "../data";
+import { APP_NAME } from '../data'
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
         <span className="font-bold text-lg mr-2">{APP_NAME}</span> &copy;{" "}
         {new Date().getFullYear()} All Rights Reserved
       </div>
-      <div className="text-center text-sm flex flex-col">
+      <div className="text-center text-sm flex flex-row gap-3 justify-center mt-2">
         <div>
           <a href="https://t.me/+aVZyKUWivutmZDg0">Telegram</a>
         </div>

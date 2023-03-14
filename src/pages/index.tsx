@@ -1,5 +1,10 @@
-import FarmsPage from './farms'
+import StatsContent from '../components/stats'
+import Layout from '../sections/Layout'
 
 export default function IndexPage() {
-  return <FarmsPage />;
+  return (
+    <Layout>
+      <StatsContent />
+    </Layout>
+  );
 }

@@ -33,7 +33,7 @@ export const yinFarms: Farm[] = [
   },
   {
     poolId: 2,
-    token: tokens.cantoShib,
+    token: tokens.cBonk,
     reward: tokens.yin,
     multiplier: 5,
     distributor: YIN_DISTRIBUTOR_ADDRESS,

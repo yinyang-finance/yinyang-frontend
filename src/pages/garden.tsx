@@ -1,5 +1,3 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-
 import GardenContent from '../components/garden'
 import Layout from '../sections/Layout'
 

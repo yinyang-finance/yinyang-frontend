@@ -79,11 +79,11 @@ export default function YinYangProvider({
       );
     axios
       .get(
-        "https://api.coingecko.com/api/v3/simple/price?ids=canto-shib&vs_currencies=usd"
+        "https://api.coingecko.com/api/v3/simple/price?ids=cantobonk&vs_currencies=usd"
       )
       .then((res) =>
         setPrices((old) => {
-          old[tokens.cantoShib.address] = res.data["canto-shib"].usd;
+          old[tokens.cBonk.address] = res.data["cantobonk"].usd;
           return old;
         })
       );

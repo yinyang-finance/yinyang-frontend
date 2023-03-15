@@ -22,11 +22,15 @@ export interface Temple {
   pendingShares?: { token: Token; amount: number }[];
 }
 const defaultProposals: Proposal[] = [
-  { token: tokens.yin, voices: 0, shares: 0 },
-  { token: tokens.yang, voices: 0, shares: 0 },
+  // { token: tokens.yin, voices: 0, shares: 0 },
+  // { token: tokens.yang, voices: 0, shares: 0 },
   { token: tokens.zen, voices: 0, shares: 0 },
   { token: tokens.wcanto, voices: 0, shares: 0 },
-  { token: tokens.matrix, voices: 0, shares: 0 },
+  { token: tokens.note, voices: 0, shares: 0 },
+  { token: tokens.flow, voices: 0, shares: 0 },
+  { token: tokens.cantoInu, voices: 0, shares: 0 },
+  { token: tokens.eth, voices: 0, shares: 0 },
+  { token: tokens.cBonk, voices: 0, shares: 0 },
 ];
 
 export default function useTemple(): Temple {

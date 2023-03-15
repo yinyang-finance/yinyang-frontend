@@ -1,14 +1,18 @@
 import Decimal from 'decimal.js'
 import { Interface } from 'ethers/lib/utils'
 import numeral from 'numeral'
+import React from 'react'
+import { BiClipboard } from 'react-icons/bi'
 import { erc20ABI, useContractReads } from 'wagmi'
 
+import { shortAddress } from '../../../utils'
 import { tokens, YANG_DISTRIBUTOR_ADDRESS, YIN_DISTRIBUTOR_ADDRESS } from '../../data'
+import { useClipboard } from '../../hooks/useClipboard'
 import { useYinYang } from '../../hooks/useYinYang'
 
 export default function StatsContent() {
   const { prices, lockedValue } = useYinYang();
-  console.log(prices[tokens.yin.address], lockedValue);
+  const { copy } = useClipboard();
 
   const { data } = useContractReads({
     allowFailure: true,
@@ -49,7 +53,7 @@ export default function StatsContent() {
           new Decimal(data[2].toString())
             .sub(new Decimal(data[0].toString()))
             .div(10 ** 18)
-            .mul(prices[tokens.yin.address])
+            .mul(prices[tokens.yin.address] || 0)
             .toNumber(),
           0
         )
@@ -59,16 +63,21 @@ export default function StatsContent() {
       ? new Decimal(data[3].toString())
           .sub(new Decimal(data[1].toString()))
           .div(10 ** 18)
-          .mul(prices[tokens.yang.address])
+          .mul(prices[tokens.yang.address] || 0)
           .toNumber()
       : "???";
   const zenMarketCap =
     data && data[4] && prices.zen
       ? new Decimal(data[4].toString())
           .div(10 ** 18)
-          .mul(prices[tokens.zen.address])
+          .mul(prices[tokens.zen.address] || 0)
           .toNumber()
       : "???";
+
+  const [, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setTimeout(() => setLoaded(true), 2000);
+  }, []);
 
   return (
     <section className="flex flex-col justify-center items-center space-y-10 mt-12 p-3">
@@ -83,7 +92,7 @@ export default function StatsContent() {
       </div>
       <div className="flex flex-wrap gap-3">
         <div className="flex flex-col rounded-xl shadow-xl bg-base-200 gap-2 p-2">
-          <div className="flex flex-row p-3 gap-3">
+          <div className="flex flex-row p-3 gap-3 pb-0">
             <div>
               <div className="text-xl opacity-60">{tokens.yin.name}</div>
               <div className="text-3xl font-bold">
@@ -100,15 +109,22 @@ export default function StatsContent() {
               <img src={tokens.yin.logo.src} className="w-10" />
             </div>
           </div>
+          <div
+            className="opacity-60 text-xs flex justify-between btn btn-ghost btn-sm mt-0 p-2"
+            onClick={() => copy(tokens.yin.address)}
+          >
+            {shortAddress(tokens.yin.address)}
+            <BiClipboard className="my-auto" />
+          </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap/${tokens.yin.address}`}
+            href={`https://velocimeter.xyz/swap`}
           >
             Buy
           </a>
         </div>
         <div className="flex flex-col rounded-xl shadow-xl bg-base-200 gap-2 p-2">
-          <div className="flex flex-row p-3 gap-3">
+          <div className="flex flex-row p-3 gap-3 pb-0">
             <div>
               <div className="text-xl opacity-60">{tokens.yang.name}</div>
               <div className="text-3xl font-bold">
@@ -125,15 +141,22 @@ export default function StatsContent() {
               <img src={tokens.yang.logo.src} className="w-10" />
             </div>
           </div>
+          <div
+            className="opacity-60 text-xs flex justify-between btn btn-ghost btn-sm mt-0 p-2"
+            onClick={() => copy(tokens.yang.address)}
+          >
+            {shortAddress(tokens.yang.address)}
+            <BiClipboard className="my-auto" />
+          </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap/${tokens.yang.address}`}
+            href={`https://velocimeter.xyz/swap`}
           >
             Buy
           </a>
         </div>
         <div className="flex flex-col rounded-xl shadow-xl bg-base-200 gap-2 p-2">
-          <div className="flex flex-row p-3 gap-3">
+          <div className="flex flex-row p-3 gap-3 pb-0">
             <div>
               <div className="text-xl opacity-60">{tokens.zen.name}</div>
               <div className="text-3xl font-bold">
@@ -150,9 +173,16 @@ export default function StatsContent() {
               <img src={tokens.zen.logo.src} className="w-10" />
             </div>
           </div>
+          <div
+            className="opacity-60 text-xs flex justify-between btn btn-ghost btn-sm mt-0 p-2"
+            onClick={() => copy(tokens.zen.address)}
+          >
+            {shortAddress(tokens.zen.address)}
+            <BiClipboard className="my-auto" />
+          </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap/${tokens.zen.address}`}
+            href={`https://velocimeter.xyz/swap`}
           >
             Buy
           </a>

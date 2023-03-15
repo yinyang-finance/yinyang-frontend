@@ -10,7 +10,7 @@ export default function GardenFarms() {
       </div>
       <div className="flex flex-wrap gap-3 justify-center mx-auto">
         {zenFarms.map((farm) => (
-          <FarmCard farm={farm} />
+          <FarmCard farm={farm} key={farm.token.address} />
         ))}
       </div>
     </div>

@@ -1,11 +1,13 @@
 import { StaticImageData } from 'next/image'
 
 import cantoLogo from '../assets/canto-network.png'
+import cBonkLogo from '../assets/cbonk.png'
 import cinuLogo from '../assets/cinu.png'
 import atomLogo from '../assets/cosmos_hub.png'
-import cshibLogo from '../assets/cshib.png'
 import ethLogo from '../assets/ethereum.png'
+import flowLogo from '../assets/flow.png'
 import matrixLogo from '../assets/m.png'
+import noteLogo from '../assets/note.png'
 import yangLogo from '../assets/yang.png'
 import yinLogo from '../assets/yin.png'
 import zenLogo from '../assets/zen.png'
@@ -34,6 +36,13 @@ export const tokens = {
     address: WCANTO_ADDRESS,
     decimals: 18,
     logo: cantoLogo,
+  },
+  note: {
+    name: "Note",
+    symbol: "NOTE",
+    address: "0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503",
+    decimals: 18,
+    logo: noteLogo,
   },
   yin: {
     name: "Yin",
@@ -98,12 +107,12 @@ export const tokens = {
     decimals: 18,
     logo: cinuLogo,
   },
-  cantoShib: {
+  cBonk: {
     name: "Canto Bonk",
     symbol: "cBonk",
     address: "0x38D11B40D2173009aDB245b869e90525950aE345",
-    decimals: 18,
-    logo: cshibLogo,
+    decimals: 9,
+    logo: cBonkLogo,
   },
   matrix: {
     name: "Matrix",
@@ -111,5 +120,12 @@ export const tokens = {
     address: "0x8b6e422f7ef6c5dcc0ad0c3dea66efacbb2b78e3",
     decimals: 18,
     logo: matrixLogo,
+  },
+  flow: {
+    name: "Flow",
+    symbol: "FLOW",
+    address: "0xB5b060055F0d1eF5174329913ef861bC3aDdF029",
+    decimals: 18,
+    logo: flowLogo,
   },
 };

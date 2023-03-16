@@ -53,7 +53,7 @@ export function DetailsModal({
                     ? (prices[farmData.lpTokens[0].address] +
                         prices[farmData.lpTokens[1].address]) /
                       2
-                    : prices[farmData.token.address]
+                    : prices[farmData.token.address] || 0
                 ).toNumber()
               ).format("aaa.aa")}
             >

@@ -80,7 +80,7 @@ export default function StatsContent() {
   }, []);
 
   return (
-    <section className="flex flex-col justify-center items-center space-y-10 mt-12 p-3">
+    <section className="flex flex-col justify-center items-center space-y-10 mt-6 p-3">
       <div className="rounded-xl bg-base-200 p-5 flex flex-col">
         <div className="text-4xl opacity-60">Value locked</div>
         <div className="font-bold text-4xl text-center">
@@ -90,7 +90,7 @@ export default function StatsContent() {
           $
         </div>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 justify-center">
         <div className="flex flex-col rounded-xl shadow-xl bg-base-200 gap-2 p-2">
           <div className="flex flex-row p-3 gap-3 pb-0">
             <div>

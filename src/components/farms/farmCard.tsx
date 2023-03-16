@@ -1,22 +1,19 @@
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import React from "react";
-import { FaExternalLinkAlt, FaQuestionCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import React from 'react'
+import { FaExternalLinkAlt, FaQuestionCircle } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import { EXPLORER_URL, REWARDS_PER_BLOCK } from "../../data";
-import distributorABI from "../../data/abis/distributor.json";
-import { Farm } from "../../data/farms";
-import { useFarm } from "../../hooks/useFarm";
-import { useYinYang } from "../../hooks/useYinYang";
-import ErrorBoundary from "../common/ErrorBoundary";
-import DepositModal from "./depositModal";
-import WithdrawModal from "./withdrawModal";
+import { EXPLORER_URL, REWARDS_PER_BLOCK } from '../../data'
+import distributorABI from '../../data/abis/distributor.json'
+import { Farm } from '../../data/farms'
+import { useFarm } from '../../hooks/useFarm'
+import { useYinYang } from '../../hooks/useYinYang'
+import ErrorBoundary from '../common/ErrorBoundary'
+import DepositModal from './depositModal'
+import { DetailsModal } from './detailsModal'
+import WithdrawModal from './withdrawModal'
 
 interface Props {
   farm: Farm;
@@ -41,6 +38,7 @@ export default function FarmCard({ farm }: Props) {
   const [loading, setLoading] = React.useState(false);
   const [openDeposit, setOpenDeposit] = React.useState(false);
   const [openWithdraw, setOpenWithdraw] = React.useState(false);
+  const [openInfo, setOpenInfo] = React.useState(false);
 
   const handleCollect = async () => {
     if (!collect) return;
@@ -85,7 +83,15 @@ export default function FarmCard({ farm }: Props) {
             }}
           />
         ) : null}
-        <div className="text-2xl font-bold text-center m-auto flex flex-col">
+        <div className="text-2xl font-bold text-center m-auto flex flex-col w-full">
+          <div className="absolute" onClick={() => setOpenInfo(true)}>
+            <FaQuestionCircle className="left-0" />
+          </div>
+          <DetailsModal
+            farmData={farmData}
+            isOpen={openInfo}
+            onClose={() => setOpenInfo(false)}
+          />
           {farm.lpTokens ? (
             <div className="flex flex-row gap-2 mx-auto p-2">
               <img className="w-12" src={farm.lpTokens[0].logo.src}></img>
@@ -117,12 +123,6 @@ export default function FarmCard({ farm }: Props) {
           <div className="flex flex-row justify-between">
             <div className="flex flex-row justify-center gap-1">
               <div>APR</div>
-              <div
-                className="my-auto tooltip"
-                data-tip="APR for each additional unit deposited at current prices"
-              >
-                <FaQuestionCircle />
-              </div>
             </div>
             <div className="font-bold">
               {prices[farm.reward.address] &&

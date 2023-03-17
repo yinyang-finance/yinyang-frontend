@@ -1,15 +1,11 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import { erc20ABI, useContractReads } from "wagmi";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import { erc20ABI, useContractReads } from 'wagmi'
 
-import {
-  tokens,
-  YANG_DISTRIBUTOR_ADDRESS,
-  YIN_DISTRIBUTOR_ADDRESS,
-} from "../../data";
-import { yangFarms, yinFarms } from "../../data/farms";
-import FarmCard from "./farmCard";
+import { tokens, YANG_DISTRIBUTOR_ADDRESS, YIN_DISTRIBUTOR_ADDRESS } from '../../data'
+import { yangFarms, yinFarms } from '../../data/farms'
+import FarmCard from './farmCard'
 
 export default function FarmsContent() {
   const { data } = useContractReads({
@@ -66,8 +62,8 @@ export default function FarmsContent() {
       </div> */}
       <p className="text-center font-semibold text-5xl">Farms</p>
       <p className="text-center">
-        Farm the initial supply of $YIN and $YANG by depositing tokens in our
-        the farms below.
+        Farm the initial supply of $YIN and $YANG by depositing tokens in the
+        farms below.
       </p>
       <div className="flex flex-col gap-2">
         <div className="text-4xl font-bold text-center flex flex-row gap-2 mx-auto">

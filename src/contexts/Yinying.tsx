@@ -8,9 +8,8 @@ import {
   PAIR_YANG_WCANTO_ADDRESS,
   PAIR_YIN_WCANTO_ADDRESS,
   PAIR_ZEN_WCANTO_ADDRESS,
+  TIMELOCK_ADDRESS,
   tokens,
-  YANG_ADDER_ADDRESS,
-  YIN_ADDER_ADDRESS,
 } from '../data'
 import useTemple, { Temple } from '../hooks/useTemple'
 
@@ -150,13 +149,13 @@ export default function YinYangProvider({
         addressOrName: PAIR_YIN_WCANTO_ADDRESS,
         contractInterface: new Interface(erc20ABI),
         functionName: "balanceOf",
-        args: [YIN_ADDER_ADDRESS],
+        args: [TIMELOCK_ADDRESS],
       },
       {
         addressOrName: PAIR_YANG_WCANTO_ADDRESS,
         contractInterface: new Interface(erc20ABI),
         functionName: "balanceOf",
-        args: [YANG_ADDER_ADDRESS],
+        args: [TIMELOCK_ADDRESS],
       },
     ],
   });

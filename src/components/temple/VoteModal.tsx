@@ -1,7 +1,7 @@
-import Decimal from "decimal.js";
-import { Interface } from "ethers/lib/utils";
-import React from "react";
-import { toast } from "react-toastify";
+import Decimal from 'decimal.js'
+import { Interface } from 'ethers/lib/utils'
+import React from 'react'
+import { toast } from 'react-toastify'
 import {
   erc20ABI,
   useAccount,
@@ -9,12 +9,12 @@ import {
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
-} from "wagmi";
+} from 'wagmi'
 
-import { NULL_ADDRESS, TEMPLE_ADDRESS } from "../../data";
-import templeABI from "../../data/abis/Temple.json";
-import { tokens } from "../../data/tokens";
-import { Proposal } from "../../hooks/useTemple";
+import { NULL_ADDRESS, TEMPLE_ADDRESS } from '../../data'
+import templeABI from '../../data/abis/Temple.json'
+import { tokens } from '../../data/tokens'
+import { Proposal } from '../../hooks/useTemple'
 
 interface Props {
   proposal: Proposal;
@@ -48,7 +48,7 @@ export default function VoteModal({ proposal, isOpen, onClose }: Props) {
     functionName: "voteForNextTarget",
     args: [
       proposal.token.address || NULL_ADDRESS,
-      amount ? new Decimal(amount).mul(10 ** 18).toString() : 0,
+      amount ? new Decimal(amount).mul(10 ** 18).toHex() : 0,
     ],
   });
   const { writeAsync: vote, data: dataWrite } = useContractWrite(config);

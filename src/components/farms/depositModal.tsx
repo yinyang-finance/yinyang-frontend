@@ -91,7 +91,7 @@ export default function DepositModal({ farm, isOpen, onClose }: Props) {
             Your balance:{" "}
             <span className="font-bold">
               {farm.userBalance !== undefined
-                ? numeral(farm.userBalance).format("aaa.aa")
+                ? numeral(farm.userBalance.toFixed(18)).format("aaa.aa")
                 : "??"}{" "}
               {farm.token.symbol}
             </span>

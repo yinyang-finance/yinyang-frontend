@@ -103,6 +103,7 @@ export function useFarm(farm: Farm) {
           .toNumber(),
         userBalance: new Decimal(data[5].toString())
           .div(10 ** farm.token.decimals)
+          .toNearest(0.00000001, Decimal.ROUND_FLOOR)
           .toNumber(),
       };
     }

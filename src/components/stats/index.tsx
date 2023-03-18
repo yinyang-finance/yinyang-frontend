@@ -118,7 +118,7 @@ export default function StatsContent() {
           </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap`}
+            href={`https://swap.defillama.com/?chain=canto&from=${tokens.yin.address}&to=0x0000000000000000000000000000000000000000`}
           >
             Buy
           </a>
@@ -150,7 +150,7 @@ export default function StatsContent() {
           </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap`}
+            href={`https://swap.defillama.com/?chain=canto&from=${tokens.yang.address}&to=0x0000000000000000000000000000000000000000`}
           >
             Buy
           </a>
@@ -182,7 +182,7 @@ export default function StatsContent() {
           </div>
           <a
             className="btn btn-full btn-accent"
-            href={`https://velocimeter.xyz/swap`}
+            href={`https://swap.defillama.com/?chain=canto&from=${tokens.zen.address}&to=0x0000000000000000000000000000000000000000`}
           >
             Buy
           </a>

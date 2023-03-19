@@ -1,11 +1,12 @@
-import numeral from "numeral";
-import React, { ReactNode } from "react";
-import { MdHowToVote } from "react-icons/md";
+import numeral from 'numeral'
+import React, { ReactNode, useState } from 'react'
+import { MdHowToVote } from 'react-icons/md'
 
-import { EXPLORER_URL, tokens } from "../../data";
-import { Proposal } from "../../hooks/useTemple";
-import { useYinYang } from "../../hooks/useYinYang";
-import VoteModal from "./VoteModal";
+import { EXPLORER_URL, tokens } from '../../data'
+import { Proposal } from '../../hooks/useTemple'
+import { useYinYang } from '../../hooks/useYinYang'
+import PreviousEpochModal from './PreviousEpochsModal'
+import VoteModal from './VoteModal'
 
 function ProposalList() {
   const { temple } = useYinYang();
@@ -83,6 +84,7 @@ function ProposalList() {
 
 export default function ProposedTokenList() {
   const { temple, prices } = useYinYang();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex flex-col gap-5 p-3 bg-base-200 rounded-xl shadow-xl w-fit m-auto">
       <div className="font-xl text-center text-3xl font-bold">Vote</div>
@@ -113,6 +115,10 @@ export default function ProposedTokenList() {
         </div>
       </div>
       <ProposalList />
+      <div className="btn btn-ghost btn-full" onClick={() => setIsOpen(true)}>
+        View previous epochs
+      </div>
+      <PreviousEpochModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }

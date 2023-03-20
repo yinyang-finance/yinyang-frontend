@@ -1,10 +1,10 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import React from 'react'
-import { useAccount, useContractReads } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import React from "react";
+import { useAccount, useContractReads } from "wagmi";
 
-import { NULL_ADDRESS, TEMPLE_ADDRESS, Token, tokens } from '../data'
-import templeABI from '../data/abis/Temple.json'
+import { NULL_ADDRESS, TEMPLE_ADDRESS, Token, tokens } from "../data";
+import templeABI from "../data/abis/Temple.json";
 
 export interface Proposal {
   token: Token;
@@ -87,25 +87,41 @@ export default function useTemple(): Temple {
   const numbers = React.useMemo(() => {
     if (dataNumbers && dataNumbers.filter(Boolean).length >= 6) {
       return {
-        numberOfPropositions: Number(dataNumbers[0].toString()),
-        currentEpoch: Number(dataNumbers[1].toString()),
-        epochStart: new Date(Number(dataNumbers[2].toString()) * 1000),
-        nextEpoch: new Date(
-          (Number(dataNumbers[2].toString()) +
-            Number(dataNumbers[3].toString())) *
-            1000
-        ),
-        shares: new Decimal(dataNumbers[4].toString()).div(10 ** 18).toNumber(),
-        lastUserUpdate: Number(dataNumbers[5].toString()),
-        pendingShares: dataNumbers[6].map((e) => ({
-          token: Object.values(tokens).find((t) => t.address === e.token)!,
-          amount: new Decimal(e.amount.toString())
-            .div(10 ** e.decimals)
-            .toNumber(),
-        })),
-        userVoices: dataNumbers[7][1]
-          ? new Decimal(dataNumbers[7][1].toString()).div(10 ** 18).toNumber()
-          : 0,
+        numberOfPropositions: dataNumbers[0]
+          ? Number(dataNumbers[0].toString())
+          : undefined,
+        currentEpoch: dataNumbers[1]
+          ? Number(dataNumbers[1].toString())
+          : undefined,
+        epochStart: dataNumbers[2]
+          ? new Date(Number(dataNumbers[2].toString()) * 1000)
+          : undefined,
+        nextEpoch:
+          dataNumbers[2] && dataNumbers[3]
+            ? new Date(
+                (Number(dataNumbers[2].toString()) +
+                  Number(dataNumbers[3].toString())) *
+                  1000
+              )
+            : undefined,
+        shares: dataNumbers[4]
+          ? new Decimal(dataNumbers[4].toString()).div(10 ** 18).toNumber()
+          : undefined,
+        lastUserUpdate: dataNumbers[5]
+          ? Number(dataNumbers[5].toString())
+          : undefined,
+        pendingShares: dataNumbers[6]
+          ? dataNumbers[6].map((e) => ({
+              token: Object.values(tokens).find((t) => t.address === e.token)!,
+              amount: new Decimal(e.amount.toString())
+                .div(10 ** e.decimals)
+                .toNumber(),
+            }))
+          : undefined,
+        userVoices:
+          dataNumbers[7] && dataNumbers[7][1]
+            ? new Decimal(dataNumbers[7][1].toString()).div(10 ** 18).toNumber()
+            : 0,
       };
     }
     return {};

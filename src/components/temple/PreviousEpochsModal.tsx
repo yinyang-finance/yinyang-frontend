@@ -1,12 +1,12 @@
-import Decimal from 'decimal.js'
-import { Interface } from 'ethers/lib/utils'
-import numeral from 'numeral'
-import React from 'react'
-import { useAccount, useContractReads } from 'wagmi'
+import Decimal from "decimal.js";
+import { Interface } from "ethers/lib/utils";
+import numeral from "numeral";
+import React from "react";
+import { useAccount, useContractReads } from "wagmi";
 
-import { TEMPLE_ADDRESS, Token, tokens } from '../../data'
-import templeABI from '../../data/abis/Temple.json'
-import { useYinYang } from '../../hooks/useYinYang'
+import { TEMPLE_ADDRESS, Token, tokens } from "../../data";
+import templeABI from "../../data/abis/Temple.json";
+import { useYinYang } from "../../hooks/useYinYang";
 
 export interface Proposition {
   startTime: Date;
@@ -39,11 +39,9 @@ export default function PreviousEpochModal({ isOpen, onClose }: Props) {
   });
 
   const propositions = React.useMemo(() => {
-    console.log(data);
-
     const processedData: Proposition[] = [];
     if (data) {
-      for (const d of data) {
+      for (const d of data.filter(Boolean)) {
         processedData.push({
           startTime: new Date(Number(d[0].toString()) * 1000),
           votedToken: Object.values(tokens).find(
@@ -56,7 +54,6 @@ export default function PreviousEpochModal({ isOpen, onClose }: Props) {
     }
     return processedData;
   }, [data]);
-  console.log(temple, propositions);
 
   return (
     <div className={`modal ${isOpen ? "modal-open" : ""}`}>

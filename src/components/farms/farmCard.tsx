@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js'
 import { Interface } from 'ethers/lib/utils'
 import numeral from 'numeral'
 import React from 'react'
@@ -52,6 +53,22 @@ export default function FarmCard({ farm }: Props) {
       setLoading(false);
     }
   };
+
+  const depositPrice = farmData.lpTokens
+    ? (prices[farmData.lpTokens[0].address] +
+        prices[farmData.lpTokens[1].address]) /
+      2
+    : prices[farm.token.address];
+  const rewardPrice = prices[farm.reward.address] || 0;
+  const rewardPerYear = REWARDS_PER_BLOCK.div(10 ** 18)
+    .mul(5256000)
+    .mul(farm.multiplier)
+    .div(farm.totalAllocPoints);
+  const totalRewardPricePerYear = new Decimal(rewardPrice).mul(rewardPerYear);
+  const totalStakingTokenInPool = new Decimal(depositPrice || 0).times(
+    farmData.totalDeposited || 0
+  );
+  const apr = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100);
 
   return (
     <ErrorBoundary>
@@ -125,31 +142,7 @@ export default function FarmCard({ farm }: Props) {
               <div>APR</div>
             </div>
             <div className="font-bold">
-              {prices[farm.reward.address] &&
-              (farmData.lpTokens
-                ? (prices[farmData.lpTokens[0].address] +
-                    prices[farmData.lpTokens[1].address]) /
-                  2
-                : prices[farm.token.address]) &&
-              farmData.totalDeposited
-                ? numeral(
-                    REWARDS_PER_BLOCK.div(10 ** 18)
-                      .mul(5256000) // 6s block for a year
-                      .mul(farmData.multiplier)
-                      .div(farmData.totalAllocPoints)
-                      .mul(prices[farm.reward.address])
-                      .div(
-                        farmData.lpTokens
-                          ? (prices[farmData.lpTokens[0].address] +
-                              prices[farmData.lpTokens[1].address]) /
-                              2
-                          : prices[farm.token.address]
-                      )
-                      .div(farmData.totalDeposited || 1)
-                      .toNumber()
-                  ).format("aaa.aa")
-                : "???"}
-              %
+              {numeral(apr.toNumber()).format("aa.aa%")}
             </div>
           </div>
           <div className="flex flex-row justify-between">

@@ -1,24 +1,15 @@
-import { Interface } from "ethers/lib/utils";
-import numeral from "numeral";
-import React from "react";
-import { toast } from "react-toastify";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { Interface } from 'ethers/lib/utils'
+import numeral from 'numeral'
+import React from 'react'
+import { toast } from 'react-toastify'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
-import {
-  PAIR_YANG_WCANTO_ADDRESS,
-  PAIR_YIN_WCANTO_ADDRESS,
-  TEMPLE_ADDRESS,
-  tokens,
-} from "../../data";
-import templeABI from "../../data/abis/Temple.json";
-import useTokenBalance from "../../hooks/useTokenBalance";
-import { useYinYang } from "../../hooks/useYinYang";
+import { TEMPLE_ADDRESS, tokens } from '../../data'
+import templeABI from '../../data/abis/Temple.json'
+import useTokenBalance from '../../hooks/useTokenBalance'
+import { useYinYang } from '../../hooks/useYinYang'
 
-export default function Treasury() {
+export default function TempleTreasury() {
   const { prices, lockedValue, temple } = useYinYang();
   const { config } = usePrepareContractWrite({
     addressOrName: TEMPLE_ADDRESS,
@@ -71,28 +62,7 @@ export default function Treasury() {
 
   return (
     <div className="bg-base-200 flex flex-col gap-5 rounded-xl shadow-xl w-fit p-2 m-2 mx-auto">
-      <div className="text-2xl font-bold text-center">Treasury</div>
-      <div className="stats m-auto">
-        <div className="stat">
-          <div className="stat-title">Total value locked</div>
-          <div className="stat-value">
-            {numeral(
-              Object.values(lockedValue).reduce((a, b) => a + b, 0)
-            ).format("aaa.aa")}
-            $
-          </div>
-          <div className="stat-desc">
-            Including{" "}
-            {numeral(
-              [
-                lockedValue[PAIR_YIN_WCANTO_ADDRESS],
-                lockedValue[PAIR_YANG_WCANTO_ADDRESS],
-              ].reduce((a, b) => a + b, 0)
-            ).format("aaa.aa")}
-            $ of liquidity
-          </div>
-        </div>
-      </div>
+      <div className="text-2xl font-bold text-center">Temple Treasury</div>
       <div className="flex gap-2">
         <div className="bg-base-300 rounded-xl shadow flex flex-col gap-2">
           <img src={tokens.yin.logo.src} className="w-12 h-12 p-1 m-auto" />

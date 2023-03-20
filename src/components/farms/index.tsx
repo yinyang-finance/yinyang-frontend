@@ -60,11 +60,11 @@ export default function FarmsContent() {
         <div>Pending rewards are bugged</div>
         <BiError className="w-8 h-8" />
       </div> */}
-      <p className="text-center font-semibold text-5xl">Farms</p>
-      <p className="text-center">
+      <div className="text-center font-semibold text-5xl">Farms</div>
+      <div className="text-center mt-0">
         Farm the initial supply of $YIN and $YANG by depositing tokens in the
         farms below.
-      </p>
+      </div>
       <div className="flex flex-col gap-2">
         <div className="text-4xl font-bold text-center flex flex-row gap-2 mx-auto">
           <img className="w-8 h-8 m-auto" src={tokens.yin.logo.src} />

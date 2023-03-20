@@ -20,6 +20,7 @@ export interface Temple {
   epochStart?: Date;
   lastUserUpdate?: number;
   pendingShares?: { token: Token; amount: number }[];
+  userVoices?: number;
 }
 const defaultProposals: Proposal[] = [
   // { token: tokens.yin, voices: 0, shares: 0 },
@@ -75,6 +76,12 @@ export default function useTemple(): Temple {
         functionName: "pendingVoterShares",
         args: [address || NULL_ADDRESS],
       },
+      {
+        addressOrName: TEMPLE_ADDRESS,
+        contractInterface: new Interface(templeABI.abi),
+        functionName: "getUserVote",
+        args: [address || NULL_ADDRESS],
+      },
     ],
   });
   const numbers = React.useMemo(() => {
@@ -96,6 +103,9 @@ export default function useTemple(): Temple {
             .div(10 ** e.decimals)
             .toNumber(),
         })),
+        userVoices: dataNumbers[7][1]
+          ? new Decimal(dataNumbers[7][1].toString()).div(10 ** 18).toNumber()
+          : 0,
       };
     }
     return {};
